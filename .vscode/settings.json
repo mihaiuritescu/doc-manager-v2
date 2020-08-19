@@ -1,0 +1,26 @@
+{
+  "editor.wrappingIndent": "none",
+  "eslint.alwaysShowStatus": true,
+  "eslint.debug": true,
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": false
+    },
+    {
+      "language": "html",
+      "autoFix": false
+    },
+    {
+      "language": "javascript",
+      "autoFix": false
+    },
+    {
+      "language": "typescript",
+      "autoFix": false
+    }
+  ],
+  "editor.tabSize": 2
+}

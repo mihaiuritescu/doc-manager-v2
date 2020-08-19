@@ -59,14 +59,19 @@ export default class RegisterComponent extends Vue {
   private email: string = "";
   private password: string = "";
   private formHasErrors = false;
+  private error: string = "";
 
   private async registerUser() {
-    console.log(this.email, this.password);
-    const response = await AuthService.register({
+    try {
+      console.log(this.email, this.password);
+      const response = await AuthService.register({
       email: this.email,
       password: this.password
     });
     console.log(response.data);
+    } catch (error) {
+      this.error = error.response.data.error;
+    }
   }
 
   private checkEmail() {
