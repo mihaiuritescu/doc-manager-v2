@@ -19,43 +19,30 @@
             flat
           >
             <v-toolbar-title>Login form</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  :href="source"
-                  icon
-                  large
-                  target="_blank"
-                  v-on="on"
-                >
-                  <v-icon>mdi-code-tags</v-icon>
-                </v-btn>
-              </template>
-              <span>Source</span>
-            </v-tooltip>
-          </v-toolbar>
-          <v-card-text>
+          </v-toolbar>        
+          <v-card-text>            
             <v-form>
               <v-text-field
-                label="Login"
-                name="login"
+                label="Email"
+                name="email"
                 prepend-icon="mdi-account"
                 type="text"
+                v-model="email"
+                :rules="[() => !!email || 'This field is required', checkEmail]"
               ></v-text-field>
-
               <v-text-field
-                id="password"
+                v-model="password"
                 label="Password"
                 name="password"
                 prepend-icon="mdi-lock"
                 type="password"
+                :rules="[() => !!password && password.length >= 8 || 'Address must be at least 8 characters long']"
               ></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary">Login</v-btn>
+            <v-btn @click="registerUser" color="primary">Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -65,9 +52,28 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import AuthService from "../services/AuthService";
 
 @Component
-export default class RegisterComponent extends Vue {}
+export default class RegisterComponent extends Vue {
+  private email: string = "";
+  private password: string = "";
+  private formHasErrors = false;
+
+  private async registerUser() {
+    console.log(this.email, this.password);
+    const response = await AuthService.register({
+      email: this.email,
+      password: this.password
+    });
+    console.log(response.data);
+  }
+
+  private checkEmail() {
+    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return pattern.test(this.email) || 'Invalid e-mail.';
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

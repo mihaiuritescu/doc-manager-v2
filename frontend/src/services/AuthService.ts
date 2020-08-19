@@ -6,7 +6,3 @@ export default {
   }
 };
 
-// AuthenticationService.register({
-//   email: 'sasas',
-//   password: '1111'
-// })
