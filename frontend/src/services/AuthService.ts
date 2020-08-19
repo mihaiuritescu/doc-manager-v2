@@ -1,10 +1,10 @@
-import Api from '@/services/ApiService'
+import Api from "@/services/ApiService";
 
 export default {
-  register (credentials: any) {
-    return Api().post('register', credentials)
+  register(credentials: any) {
+    return Api().post("register", credentials);
   }
-}
+};
 
 // AuthenticationService.register({
 //   email: 'sasas',
