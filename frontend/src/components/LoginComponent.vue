@@ -18,7 +18,7 @@
             dark
             flat
           >
-            <v-toolbar-title>Register</v-toolbar-title>
+            <v-toolbar-title>Login</v-toolbar-title>
           </v-toolbar>        
           <v-card-text>            
             <v-form>
@@ -42,8 +42,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="registerUser" color="primary">Register</v-btn>
-            <v-btn to="/login" color="primary">Login</v-btn>
+            <v-btn @click="loginUser" color="primary">Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -56,31 +55,31 @@ import { Component, Vue } from "vue-property-decorator";
 import AuthService from "../services/AuthService";
 
 @Component
-export default class RegisterComponent extends Vue {
+export default class LoginComponent extends Vue {
   private email = "";
   private password = "";
   private formHasErrors = false;
   private error = "";
 
-  private async registerUser() {
+  private async loginUser() {
     try {
-      const response = await AuthService.register({
+      console.log(this.email, this.password);
+      const response = await AuthService.login({
         email: this.email,
         password: this.password
       });
+      console.log(response.data);
       this.$store.dispatch("setToken", response.data.token);
       this.$store.dispatch("setUser", response.data.user);
     } catch (error) {
       this.error = error.response.data.error;
     }
-
   }
 
   private checkEmail() {
     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return pattern.test(this.email) || "Invalid e-mail.";
   }
-
 }
 </script>
 
