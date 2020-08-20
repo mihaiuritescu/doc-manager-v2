@@ -28,7 +28,7 @@
                 prepend-icon="mdi-account"
                 type="text"
                 v-model="email"
-                :rules="[() => !!email || 'This field is required', checkEmail]"
+                :rules="[((() => !!email) || 'This field is required'), checkEmail]"
               ></v-text-field>
               <v-text-field
                 v-model="password"
@@ -56,19 +56,19 @@ import AuthService from "../services/AuthService";
 
 @Component
 export default class RegisterComponent extends Vue {
-  private email: string = "";
-  private password: string = "";
+  private email = "";
+  private password = "";
   private formHasErrors = false;
-  private error: string = "";
+  private error = "";
 
   private async registerUser() {
     try {
       console.log(this.email, this.password);
       const response = await AuthService.register({
-      email: this.email,
-      password: this.password
-    });
-    console.log(response.data);
+        email: this.email,
+        password: this.password
+      });
+      console.log(response.data);
     } catch (error) {
       this.error = error.response.data.error;
     }
@@ -76,7 +76,7 @@ export default class RegisterComponent extends Vue {
 
   private checkEmail() {
     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return pattern.test(this.email) || 'Invalid e-mail.';
+    return pattern.test(this.email) || "Invalid e-mail.";
   }
 }
 </script>

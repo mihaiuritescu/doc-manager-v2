@@ -2,37 +2,28 @@
   "root": true,
   "env": {
     "browser": true,
-    "commonjs": true,
-    "es6": true,
-    "node": true
+    "es2020": true
   },
   "extends": [
-    "standard",
     "eslint:recommended",
     "@vue/typescript/recommended",
-    "@vue/prettier",
     "@vue/prettier/@typescript-eslint"
+    // "plugin:vue/essential",
+    // "plugin:@typescript-eslint/recommended"
   ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 11,
+    "parser": "@typescript-eslint/parser",
+    "sourceType": "module"
   },
+  "plugins": [
+    "vue",
+    "@typescript-eslint"
+  ],
   "rules": {
-    "@typescript-eslint/camelcase": "off",
-    "camelcase": "off",
-    "semi": [1, "always"],
-    "space-before-function-paren": ["error", "never"],
-    "max-len": "off",
-    "no-unused-vars": "off",
-    "linebreak-style": [0, "unix"],
-    "prettier/prettier": ["error", {
-      "endOfLine":"auto" 
-      } 
-    ]
+    "indent": ["error", 2],
+    "quotes": ["error","double"],
+    "semi": ["error", "always"],
+    "space-before-function-paren": ["error", "never"]
   }
 }
