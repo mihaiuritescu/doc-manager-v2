@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app-background">
     <router-view />
   </v-app>
 </template>
@@ -17,3 +17,16 @@ export default Vue.extend({
   })
 });
 </script>
+
+<style lang="scss">
+  html {
+    overflow: hidden !important;
+  }
+  .app-background {
+    background-image: url("./assets/wp.jpg") !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+  }
+</style>
+

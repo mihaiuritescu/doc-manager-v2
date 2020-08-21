@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import NewUser from "@/components/RegisterComponent.vue";
 
 Vue.use(Vuex);
 
@@ -11,7 +12,7 @@ export default new Vuex.Store({
   ],
   state: {
     token: null,
-    user: null,
+    user: {} as NewUser,
     isUserLoggedIn: false
   },
   mutations: {

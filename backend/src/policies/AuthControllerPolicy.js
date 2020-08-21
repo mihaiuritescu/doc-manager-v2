@@ -6,7 +6,14 @@ module.exports = {
       email: Joi.string().email(),
       password: Joi.string().regex(
         new RegExp('^[a-zA-Z0-9]{8,32}$')
-      )
+      ),
+      firstname: Joi.string(),
+      lastname: Joi.string(),
+      address: Joi.string(),
+      postalcode: Joi.string(),
+      city: Joi.string(),
+      country: Joi.string(),
+      phone: Joi.string(),
     });
 
     const {error} = schema.validate(req.body);
