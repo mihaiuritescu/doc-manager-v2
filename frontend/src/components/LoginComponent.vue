@@ -15,11 +15,10 @@
       >
         <v-card class="elevation-12">
           <v-toolbar
-            color="#087f23"
-            dark
+            color="accent"
             flat
           >
-            <v-toolbar-title>Login</v-toolbar-title>
+            <v-toolbar-title class="app-white-text">Login</v-toolbar-title>
           </v-toolbar>        
           <v-card-text>
             <h2 class="d-flex justify-center">Welcome to DocManager!</h2>
@@ -29,7 +28,7 @@
             </h3>     
             <v-form>
               <v-text-field
-                color="#4caf50"
+                color="accent"
                 label="Email"
                 name="email"
                 prepend-icon="mdi-account"
@@ -38,7 +37,7 @@
                 :rules="[((() => !!credentials.email) || 'This field is required'), checkEmail]"
               ></v-text-field>
               <v-text-field
-                color="#4caf50"
+                color="accent"
                 v-model="credentials.password"
                 label="Password"
                 name="password"
@@ -54,8 +53,7 @@
           <v-card-actions class="justify-center align-center d-flex">
             <v-btn 
               @click="loginUser" 
-              dark 
-              color="#087f23"
+              color="accent"
               class="login-button"
             >
               Sign in to your account
@@ -70,11 +68,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import AuthService from "../services/AuthService";
-
-export interface Credentials {
-  email: string,
-  password: string
-}
+import { Credentials } from "../types/appTypes";
 
 @Component({
   name: "LoginComponent"
@@ -99,6 +93,7 @@ export default class LoginComponent extends Vue {
         this.$store.dispatch("setUser", response.data.user);
         this.error = "";
         console.log("login successfull");
+        this.$router.push("dashboard");
       } catch (error) {
         this.error = error.response.data.error;
       }

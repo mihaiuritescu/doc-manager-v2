@@ -15,11 +15,10 @@
       >
         <v-card class="elevation-12">
           <v-toolbar
-            color="#087f23"
-            dark
+            color="accent"
             flat
           >
-            <v-toolbar-title>Register</v-toolbar-title>
+            <v-toolbar-title class="app-white-text">Register</v-toolbar-title>
           </v-toolbar>        
           <v-card-text>
             <h2 class="d-flex justify-center">Welcome to DocManager!</h2>
@@ -31,7 +30,7 @@
               <div class="d-flex justify-space-between">
                 <v-text-field
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   label="First name"
                   name="firstname"
                   prepend-icon="mdi-account"
@@ -41,7 +40,7 @@
                 ></v-text-field>
                 <v-text-field
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   label="Last name"
                   name="lastname"
                   prepend-icon="mdi-account"
@@ -53,7 +52,7 @@
               <div class="d-flex justify-space-between">
                 <v-text-field
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   label="Address"
                   name="address"
                   prepend-icon="mdi-map-marker"
@@ -63,7 +62,7 @@
                 ></v-text-field>
                 <v-text-field
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   label="Postal code"
                   name="postalcode"
                   prepend-icon="mdi-barcode"
@@ -75,7 +74,7 @@
               <div class="d-flex justify-space-between">
                 <v-text-field
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   label="City"
                   name="city"
                   prepend-icon="mdi-city"
@@ -85,7 +84,7 @@
                 ></v-text-field>
                 <v-select
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   prepend-icon="mdi-earth"
                   v-model="user.country"
                   label="Country"
@@ -94,9 +93,29 @@
                 ></v-select>
               </div>
               <div class="d-flex justify-space-between">
+                <v-select
+                  class="register-field"
+                  color="accent"
+                  prepend-icon="mdi-briefcase"
+                  v-model="user.occupation"
+                  label="Occupation"
+                  :items="occupations"
+                  :rules="[((() => !!user.occupation) || 'This field is required')]"
+                ></v-select>
+                <v-select
+                  class="register-field"
+                  color="accent"
+                  prepend-icon="mdi-account-group"
+                  v-model="user.department"
+                  label="Department"
+                  :items="departments"
+                  :rules="[((() => !!user.department) || 'This field is required')]"
+                ></v-select>
+              </div>
+              <div class="d-flex justify-space-between">
                 <v-text-field
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   label="Email"
                   name="email"
                   prepend-icon="mdi-at"
@@ -106,7 +125,7 @@
                 ></v-text-field>
                 <v-text-field
                   class="register-field"
-                  color="#087f23"
+                  color="accent"
                   label="Phone"
                   name="phone"
                   prepend-icon="mdi-cellphone"
@@ -122,7 +141,7 @@
                   :rules="[() => !!user.password && user.password.length >= 8 || 'Password must be at least 8 characters long']"
                   :type="showPwd1 ? 'text' : 'password'"
                   prepend-icon="mdi-lock"
-                  color="#087f23"
+                  color="accent"
                   v-model="user.password"
                   name="password"
                   label="Password"
@@ -135,7 +154,7 @@
                   :rules="[() => !!pwd && pwd.length >= 8 || 'Password must be at least 8 characters long', matchPwd]"
                   :type="showPwd2 ? 'text' : 'password'"
                   prepend-icon="mdi-lock"
-                  color="#087f23"
+                  color="accent"
                   v-model="pwd"
                   name="password"
                   label="Confirm password"
@@ -151,8 +170,7 @@
           <v-card-actions class="justify-center align-center d-flex">
             <v-btn 
               @click="registerUser" 
-              color="#087f23"
-              dark
+              color="accent"
               class="login-button"
             >
               Register
@@ -167,28 +185,19 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import AuthService from "../services/AuthService";
-
-export interface NewUser {
-  email: string,
-  password: string,
-  firstname: string,
-  lastname: string,
-  address: string,
-  country: string,
-  city: string,
-  postalCode: string,
-  phone: string
-}
+import { User } from "../types/appTypes";
 
 @Component({
   name: "RegisterComponent"
 })
 export default class RegisterComponent extends Vue {
-  private user = {} as NewUser;
+  private user = {} as User;
   private error = "";
   private pwd = "";
   private showPwd1 = false;
   private showPwd2 = false;
+  private occupations = ["Accountant", "Engineer", "Administrator", "Manager"];
+  private departments = ["IT", "HR", "Security", "Marketing"];
   private countries = ["Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla",
     "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas",
     "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia",
@@ -236,6 +245,7 @@ export default class RegisterComponent extends Vue {
         const response = await AuthService.register(this.user);
         this.$store.dispatch("setToken", response.data.token);
         this.$store.dispatch("setUser", response.data.user);
+        this.$router.push("dashboard");
       } catch (error) {
         this.error = error.response.data.error;
       }

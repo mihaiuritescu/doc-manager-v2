@@ -14,6 +14,8 @@ module.exports = {
       city: Joi.string(),
       country: Joi.string(),
       phone: Joi.string(),
+      occupation: Joi.string(),
+      department: Joi.string(),
     });
 
     const {error} = schema.validate(req.body);

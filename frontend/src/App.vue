@@ -22,11 +22,16 @@ export default Vue.extend({
   html {
     overflow: hidden !important;
   }
+
   .app-background {
     background-image: url("./assets/wp.jpg") !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
+  }
+
+  .app-white-text {
+    color: white;
   }
 </style>
 
