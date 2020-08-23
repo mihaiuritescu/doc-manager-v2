@@ -23,3 +23,11 @@ export interface Notification {
   date: number,
   status: string
 }
+
+export interface HolidayRequest {
+  userEmail: string,
+  startDate: string
+  endDate: string,
+  contact: string,
+  status: string
+}

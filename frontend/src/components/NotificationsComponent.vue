@@ -198,12 +198,12 @@ export default class NotificationsComponent extends Vue {
 
   .notifications-panel-card {
     width: 550px;
-    height: 700px;
+    height: 650px;
   }
 
   .notifications-panel-content {
     padding: 0 16px;
-    height: 625px;
+    height: 575px;
   }
 
   .notifications-panel-list {
