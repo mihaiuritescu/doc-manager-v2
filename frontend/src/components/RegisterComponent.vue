@@ -18,7 +18,7 @@
             color="accent"
             flat
           >
-            <v-toolbar-title class="app-white-text">Register</v-toolbar-title>
+            <v-toolbar-title class="white--text">Register</v-toolbar-title>
           </v-toolbar>        
           <v-card-text>
             <h2 class="d-flex justify-center">Welcome to DocManager!</h2>
@@ -239,8 +239,6 @@ export default class RegisterComponent extends Vue {
 
   private async registerUser() {
     if(this.checkForm() && this.checkEmail() && this.matchPwd() === true) {
-      console.log("all good");
-      console.log(this.user);
       try {
         const response = await AuthService.register(this.user);
         this.$store.dispatch("setToken", response.data.token);
@@ -274,17 +272,17 @@ export default class RegisterComponent extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  .register-field {
-    max-width: 280px !important;
-  }
+.register-field {
+  max-width: 280px !important;
+}
 
-  .register-col {
-    min-width: 640px !important;
-    max-width: 640px !important;
-  }
+.register-col {
+  min-width: 640px !important;
+  max-width: 640px !important;
+}
 
-  .register-error {
-    color: red;
-    margin-left:  33px;
-  }
+.register-error {
+  color: red;
+  margin-left:  33px;
+}
 </style>

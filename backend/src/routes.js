@@ -1,4 +1,5 @@
 const AuthController = require('./controllers/AuthController');
+const FormsController = require('./controllers/FormsController');
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy');
 
 module.exports = (app) => {
@@ -6,7 +7,12 @@ module.exports = (app) => {
     AuthControllerPolicy.register,
     AuthController.register);
 
-    app.post('/login',
-    // AuthControllerPolicy.register,
-    AuthController.login);
+  app.post('/login',
+  AuthController.login);
+
+  app.post('/holiday-request',
+  FormsController.holidayRequest);
+
+  app.post('/report',
+  FormsController.report);
 }

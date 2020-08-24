@@ -18,7 +18,7 @@
             color="accent"
             flat
           >
-            <v-toolbar-title class="app-white-text">Login</v-toolbar-title>
+            <v-toolbar-title class="white--text">Login</v-toolbar-title>
           </v-toolbar>        
           <v-card-text>
             <h2 class="d-flex justify-center">Welcome to DocManager!</h2>
@@ -92,7 +92,6 @@ export default class LoginComponent extends Vue {
         delete response.data.user.updatedAt;
         this.$store.dispatch("setUser", response.data.user);
         this.error = "";
-        console.log("login successfull");
         this.$router.push("dashboard");
       } catch (error) {
         this.error = error.response.data.error;
@@ -115,17 +114,17 @@ export default class LoginComponent extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  .login-col {
-    max-width: 450px !important;
-  }
+.login-col {
+  max-width: 450px !important;
+}
 
-  .login-description {
-    margin-top: 15px;
-    margin-left: 33px;
-    margin-bottom: 15px;
-  }
+.login-description {
+  margin-top: 15px;
+  margin-left: 33px;
+  margin-bottom: 15px;
+}
 
-  .login-button {
-    margin-bottom: 15px;
-  }
+.login-button {
+  margin-bottom: 15px;
+}
 </style>

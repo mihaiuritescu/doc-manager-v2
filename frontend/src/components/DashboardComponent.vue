@@ -93,6 +93,7 @@ import { Component, Vue } from "vue-property-decorator";
 import UserProfileComponent from "@/components/UserProfileComponent.vue";
 import NotificationsComponent from "@/components/NotificationsComponent.vue";
 import HolidayRequestComponent from "@/components/HolidayRequestComponent.vue";
+import ReportComponent from "@/components/ReportComponent.vue";
 import VueGridLayout from "vue-grid-layout";
 
 @Component({
@@ -101,6 +102,7 @@ import VueGridLayout from "vue-grid-layout";
     UserProfileComponent,
     NotificationsComponent,
     HolidayRequestComponent,
+    ReportComponent,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   }
@@ -114,11 +116,11 @@ export default class DashboardComponent extends Vue {
   private drawer = true;
   private layout = [
     {"x":0,"y":0,"w":2,"h":1,"i":"0", comp: HolidayRequestComponent},
-    {"x":2,"y":0,"w":2,"h":2,"i":"1"},
+    {"x":2,"y":0,"w":2,"h":1,"i":"1", comp: ReportComponent},
     {"x":4,"y":0,"w":2,"h":2,"i":"2"},
     {"x":6,"y":0,"w":2,"h":2,"i":"3"},
     {"x":0,"y":1,"w":2,"h":2,"i":"4"},
-    {"x":2,"y":2,"w":2,"h":2,"i":"5"},
+    {"x":2,"y":1,"w":2,"h":2,"i":"5"},
   ];
 
   private addNotif() {

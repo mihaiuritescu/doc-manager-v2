@@ -31,3 +31,14 @@ export interface HolidayRequest {
   contact: string,
   status: string
 }
+
+export interface Report {
+  userEmail: string,
+  address: string,
+  phone: string,
+  locationManager: string,
+  equipmentType: string,
+  equipmentDetails: string,
+  problemsFound: string,
+  observations: string
+}

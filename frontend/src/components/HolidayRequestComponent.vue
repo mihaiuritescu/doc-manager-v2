@@ -1,9 +1,10 @@
 <template>
   <div class="d-flex flex-column align-center justify-space-between holiday-request-wrapper">
-    <v-icon>mdi-account</v-icon>
+    <v-icon class="app-widget-icon">mdi-palm-tree</v-icon>
     <v-dialog
       v-model="dialog"
       width="500"
+      @click:outside="clearForm"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -22,7 +23,7 @@
           Holiday Request
         </v-card-title>
 
-        <v-card-text>
+        <v-card-text class="holiday-request-card-content">
           <v-form>
             <div class="d-flex justify-space-between">
               <v-text-field
@@ -33,7 +34,7 @@
                 prepend-icon="mdi-account"
                 type="text"
                 v-model="user.firstname"
-                readonly
+                disabled
               ></v-text-field>
               <v-text-field
                 class="register-field"
@@ -43,7 +44,7 @@
                 prepend-icon="mdi-account"
                 type="text"
                 v-model="user.lastname"
-                readonly
+                disabled
               ></v-text-field>
             </div>
             <div class="d-flex justify-space-between">
@@ -53,9 +54,9 @@
                 v-model="user.occupation"
                 label="Occupation"
                 name="occupation"
-                prepend-icon="mdi-account"
+                prepend-icon="mdi-briefcase"
                 type="text"
-                readonly
+                disabled
               ></v-text-field>
               <v-text-field
                 class="register-field"
@@ -63,9 +64,9 @@
                 v-model="user.department"
                 label="Department"
                 name="department"
-                prepend-icon="mdi-account"
+                prepend-icon="mdi-account-group"
                 type="text"
-                readonly
+                disabled
               ></v-text-field>
             </div>
             <div class="d-flex justify-space-between">
@@ -84,7 +85,6 @@
                     v-model="holidayRequest.startDate"
                     label="Start date"
                     prepend-icon="mdi-calendar"
-                    readonly
                     v-bind="attrs"
                     v-on="on"
                   ></v-text-field>
@@ -110,7 +110,6 @@
                     v-model="holidayRequest.endDate"
                     label="End date"
                     prepend-icon="mdi-calendar"
-                    readonly
                     v-bind="attrs"
                     v-on="on"
                   ></v-text-field>
@@ -124,13 +123,14 @@
             </div>
             <div class="d-flex justify-space-between">
               <v-text-field
+                v-model="holidayLenght"
                 class="register-field"
                 color="accent"
                 label="Holiday length"
                 name="holidayLength"
-                prepend-icon="mdi-account"
+                prepend-icon="mdi-calendar-range"
                 type="text"
-                readonly
+                disabled
               ></v-text-field>
               <v-text-field
                 class="register-field"
@@ -138,21 +138,26 @@
                 v-model="holidayRequest.contact"
                 label="Contact"
                 name="contact"
-                prepend-icon="mdi-account"
+                prepend-icon="mdi-phone"
                 type="text"
                 :rules="[((() => !!holidayRequest.contact) || 'This field is required')]"
               ></v-text-field>
             </div>
           </v-form>
+          <span v-if="error" class="holiday-request-error">{{ error }}</span>
         </v-card-text>
-
         <v-divider></v-divider>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
+        <v-card-actions class="d-flex justify-space-between holiday-request-actions">
           <v-btn
             color="primary"
             outlined
+            @click="clearForm"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="primary"
             @click="submitRequest"
           >
             Submit new holiday request
@@ -164,30 +169,50 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { User, HolidayRequest } from "..//types/appTypes";
 import { mapState } from "vuex";
+import FormsService from "../services/FormsService";
+import moment from "moment-business-days";
 
 @Component({
   name: "HolidayRequestComponent",
   computed: mapState(["user"])
 })
 export default class HolidayRequestComponent extends Vue {
+  private moment = moment;
   private dialog = false;
   private startDateMenu = false;
   private endDateMenu = false;
-  // private startDate = new Date().toISOString().substr(0, 10);
-  // private endDate = new Date().toISOString().substr(0, 10);
+  private holidayLenght = 0;
   private user!: User;
   private holidayRequest = {} as HolidayRequest;
+  private error = "";
 
-  private submitRequest(): void {
-    if(this.checkForm()) {
-      console.log(this.holidayRequest);
-      console.log(Date.parse(this.holidayRequest.startDate));
-      // CALCULATE DATE DIFFERENCE
-      this.dialog = false;
-    }
+  @Watch("holidayRequest", { immediate: true, deep: true })
+  onHolidayRequestChange(): void {
+    this.error = "";
+    if(this.holidayRequest.startDate && this.holidayRequest.endDate)
+      this.holidayLenght = moment(this.holidayRequest.startDate, "YYYY-MM-DD").businessDiff(moment(this.holidayRequest.endDate, "YYYY-MM-DD"));
+  }
+
+  private async submitRequest() {
+    if(this.checkForm() && this.holidayLenght > 0) {
+      try {
+        const response = await FormsService.submitHolidayRequest(this.holidayRequest);
+        if(response) this.clearForm();
+      } catch (error) {
+        this.error = error.response.data.error;
+      }
+    } else this.error = "All fields are required and holiday length should be > 0";
+  }
+
+  private clearForm(): void {
+    this.dialog = false;
+    this.error = "";
+    this.holidayRequest.contact = "";
+    this.holidayRequest.startDate = new Date().toISOString().substr(0, 10);
+    this.holidayRequest.endDate = new Date().toISOString().substr(0, 10);
   }
 
   private checkForm() {
@@ -214,5 +239,18 @@ export default class HolidayRequestComponent extends Vue {
 .holiday-request-wrapper {
   height: 100%;
   width: 100%;
+}
+
+.holiday-request-error {
+  color: red;
+}
+
+.holiday-request-card-content {
+  margin-top: 15px !important;
+  margin-bottom: -10px !important;
+}
+
+.holiday-request-actions {
+  padding: 10px 25px !important;
 }
 </style>>

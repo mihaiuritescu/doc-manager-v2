@@ -19,19 +19,24 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-  html {
-    overflow: hidden !important;
-  }
+html {
+  overflow: hidden !important;
+}
 
-  .app-background {
-    background-image: url("./assets/wp.jpg") !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-  }
+.app-background {
+  background-image: url("./assets/wp.jpg") !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
 
-  .app-white-text {
-    color: white;
-  }
+.app-white-text {
+  color: white;
+}
+
+.app-widget-icon {
+  font-size: 100px !important;
+  color: #4caf50 !important;
+}
 </style>
 
