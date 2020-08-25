@@ -1,4 +1,4 @@
-const {User} = require('../models');
+const { User, Department, Occupation } = require('../models');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
@@ -12,13 +12,32 @@ function jwtSignUser (user) {
 module.exports = {
   async register (req, res) {
     try {
-      const user = await User.create(req.body);
-      const userJson = user.toJSON();
-      res.send({
-        user: userJson,
-        token: jwtSignUser(userJson)
-      })
+      const occupation = await Occupation.findOne({ where: { name: req.body.occupation } });
+      const department = await Department.findOne({ where: { name: req.body.department } });
+      
+      if(occupation && department) {
+        const newUser = {
+          email: req.body.email,
+          password: req.body.email,
+          firstname: req.body.email,
+          lastname: req.body.email,
+          address: req.body.email,
+          postalcode: req.body.email,
+          city: req.body.email,
+          country: req.body.email,
+          phone: req.body.email,
+          occupation: occupation.dataValues.id,
+          department: department.dataValues.id,
+        };
+        const user = await User.create(newUser);
+        const userJson = user.toJSON();
+        res.send({
+          user: userJson,
+          token: jwtSignUser(userJson)
+        })
+      }
     } catch (err) {
+      console.log(err);
       res.status(400).send({
         error: 'This email account is already in use.'
       })
@@ -53,6 +72,7 @@ module.exports = {
         token: jwtSignUser(userJson)
       })
     } catch (err) {
+      console.log(err);
       res.status(500).send({
         error: 'An error has occured trying to log in'
       })

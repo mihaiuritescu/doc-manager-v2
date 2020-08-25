@@ -177,9 +177,6 @@ import moment from "moment-business-days";
 export default class ReportComponent extends Vue {
   private moment = moment;
   private dialog = false;
-  private startDateMenu = false;
-  private endDateMenu = false;
-  private holidayLenght = 0;
   private user!: User;
   private report = {} as Report;
   private error = "";
@@ -203,9 +200,8 @@ export default class ReportComponent extends Vue {
   private clearForm(): void {
     this.dialog = false;
     this.error = "";
-    for (let [key, value] of Object.entries(this.report)) {//eslint-disable-line
-      if(key !== "userEmail") this.report[key] = "";//eslint-disable-line
-    }
+    this.report = {} as Report;
+    this.report.userEmail = this.user.email;
   }
 
   private checkForm() {
@@ -225,7 +221,8 @@ export default class ReportComponent extends Vue {
       equipmentType: "",
       equipmentDetails: "",
       problemsFound: "",
-      observations: ""
+      observations: "",
+      status: "new"
     };
   }
 }

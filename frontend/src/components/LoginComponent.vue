@@ -83,7 +83,7 @@ export default class LoginComponent extends Vue {
   }
 
   private async loginUser() {
-    if(this.checkForm() && this.checkEmail()) {
+    if(this.checkForm() && this.checkEmail() === true) {
       try {
         const response = await AuthService.login(this.credentials);
         this.$store.dispatch("setToken", response.data.token);
@@ -112,7 +112,6 @@ export default class LoginComponent extends Vue {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 .login-col {
   max-width: 450px !important;

@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     equipmentType: DataTypes.STRING,
     equipmentDetails: DataTypes.TEXT,
     problemsFound: DataTypes.TEXT,
-    observations: DataTypes.TEXT
+    observations: DataTypes.TEXT,
+    status: DataTypes.STRING
   });
 
   return Report;

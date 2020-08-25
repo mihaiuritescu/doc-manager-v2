@@ -184,8 +184,9 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import AuthService from "../services/AuthService";
 import { User } from "../types/appTypes";
+import FormsService from "../services/FormsService";
+import AuthService from "../services/AuthService";
 
 @Component({
   name: "RegisterComponent"
@@ -196,8 +197,8 @@ export default class RegisterComponent extends Vue {
   private pwd = "";
   private showPwd1 = false;
   private showPwd2 = false;
-  private occupations = ["Accountant", "Engineer", "Administrator", "Manager"];
-  private departments = ["IT", "HR", "Security", "Marketing"];
+  private occupations = [] as string[]; 
+  private departments = [] as string[];
   private countries = ["Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla",
     "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas",
     "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia",
@@ -238,7 +239,7 @@ export default class RegisterComponent extends Vue {
   }
 
   private async registerUser() {
-    if(this.checkForm() && this.checkEmail() && this.matchPwd() === true) {
+    if(this.checkForm() && this.checkEmail() === true && this.matchPwd() === true) {
       try {
         const response = await AuthService.register(this.user);
         this.$store.dispatch("setToken", response.data.token);
@@ -267,10 +268,20 @@ export default class RegisterComponent extends Vue {
     return this.user.password === this.pwd || "Passwords do not match";
   }
 
+  private async mounted() {
+    const departments = (await FormsService.getDepartments()).data;
+    departments.forEach( (department: any) => {//eslint-disable-line
+      this.departments.push(department.name);
+    });
+
+    const occupations = (await FormsService.getOccupations()).data;
+    occupations.forEach( (occupation: any) => {//eslint-disable-line
+      this.occupations.push(occupation.name);
+    });
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 .register-field {
   max-width: 280px !important;

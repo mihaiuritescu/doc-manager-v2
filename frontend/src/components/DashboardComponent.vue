@@ -94,6 +94,8 @@ import UserProfileComponent from "@/components/UserProfileComponent.vue";
 import NotificationsComponent from "@/components/NotificationsComponent.vue";
 import HolidayRequestComponent from "@/components/HolidayRequestComponent.vue";
 import ReportComponent from "@/components/ReportComponent.vue";
+import SupplierComponent from "@/components/SupplierComponent.vue";
+import ProductComponent from "@/components/ProductComponent.vue";
 import VueGridLayout from "vue-grid-layout";
 
 @Component({
@@ -103,6 +105,7 @@ import VueGridLayout from "vue-grid-layout";
     NotificationsComponent,
     HolidayRequestComponent,
     ReportComponent,
+    ProductComponent,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   }
@@ -117,8 +120,8 @@ export default class DashboardComponent extends Vue {
   private layout = [
     {"x":0,"y":0,"w":2,"h":1,"i":"0", comp: HolidayRequestComponent},
     {"x":2,"y":0,"w":2,"h":1,"i":"1", comp: ReportComponent},
-    {"x":4,"y":0,"w":2,"h":2,"i":"2"},
-    {"x":6,"y":0,"w":2,"h":2,"i":"3"},
+    {"x":4,"y":0,"w":2,"h":1,"i":"2", comp: SupplierComponent},
+    {"x":6,"y":0,"w":2,"h":1,"i":"3", comp: ProductComponent},
     {"x":0,"y":1,"w":2,"h":2,"i":"4"},
     {"x":2,"y":1,"w":2,"h":2,"i":"5"},
   ];
@@ -134,7 +137,6 @@ export default class DashboardComponent extends Vue {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 .dashboard-wrapper {
   height: 100%;

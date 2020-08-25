@@ -40,5 +40,20 @@ export interface Report {
   equipmentType: string,
   equipmentDetails: string,
   problemsFound: string,
-  observations: string
+  observations: string,
+  status: string
+}
+
+export interface Supplier {
+  name: string,
+  address: string,
+  phone: string,
+  email: string,
+}
+
+export interface Product {
+  name: string,
+  description: string,
+  price: number,
+  supplier: string,
 }

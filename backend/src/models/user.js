@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     city: DataTypes.STRING,
     country: DataTypes.STRING,
     phone: DataTypes.STRING,
-    occupation: DataTypes.STRING,
-    department: DataTypes.STRING,
+    occupation: DataTypes.INTEGER,
+    department: DataTypes.INTEGER,
   }, 
   {
     hooks: {
