@@ -61,6 +61,7 @@
             :w="item.w"
             :h="item.h"
             :i="item.i"
+            :is-resizable="item.resizable"
             :key="item.i"
             class="d-flex align-center justify-center dashboard-grid-widget"
           >
@@ -81,7 +82,7 @@
           class="text-center"
           cols="12"
         >
-          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+          {{ new Date().getFullYear() }} — <strong> DocManager</strong>
         </v-col>
       </v-footer>
     </div>
@@ -112,16 +113,17 @@ import VueGridLayout from "vue-grid-layout";
 })
 export default class DashboardComponent extends Vue {
   private items = [
-    { title: "Dashboard", icon: "mdi-view-dashboard" },
-    { title: "Account", icon: "mdi-account" },
-    { title: "Admin", icon: "mdi-gavel" },
+    { title: "Dashboard", icon: "mdi-view-dashboard", action: "dashboard" },
+    { title: "Employees", icon: "mdi-account", action: "employees" },
+    { title: "Products", icon: "mdi-monitor", action: "products" },
+    { title: "Documents", icon: "mdi-file-document", action: "documents" },
   ];
   private drawer = true;
   private layout = [
-    {"x":0,"y":0,"w":2,"h":1,"i":"0", comp: HolidayRequestComponent},
-    {"x":2,"y":0,"w":2,"h":1,"i":"1", comp: ReportComponent},
-    {"x":4,"y":0,"w":2,"h":1,"i":"2", comp: SupplierComponent},
-    {"x":6,"y":0,"w":2,"h":1,"i":"3", comp: ProductComponent},
+    {"x":0,"y":0,"w":2,"h":1,"i":"0", comp: HolidayRequestComponent, resizable: false },
+    {"x":2,"y":0,"w":2,"h":1,"i":"1", comp: ReportComponent, resizable: false },
+    {"x":4,"y":0,"w":2,"h":1,"i":"2", comp: SupplierComponent, resizable: false },
+    {"x":6,"y":0,"w":2,"h":1,"i":"3", comp: ProductComponent, resizable: false },
     {"x":0,"y":1,"w":2,"h":2,"i":"4"},
     {"x":2,"y":1,"w":2,"h":2,"i":"5"},
   ];
