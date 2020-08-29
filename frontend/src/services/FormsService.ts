@@ -24,6 +24,13 @@ export default {
     return Api().get("product");
   },
 
+  submitOrder(order: unknown) {
+    return Api().post("order", order);
+  },
+  getOrders() {
+    return Api().get("order");
+  },
+
   getDepartments() {
     return Api().get("department");
   },

@@ -205,7 +205,7 @@ export default class HolidayRequestComponent extends Vue {
           this.$store.commit("addNotification", 
             { message: "The holiday request was successfully registered", 
               type: "info", 
-              date: Math.round(new Date(response.data.form.createdAt).getTime()), 
+              date: Date.now(), 
               status: "new"
             });
         }

@@ -141,7 +141,7 @@ export default class SupplierComponent extends Vue {
           this.$store.commit("addNotification", 
             { message: "Supplier " + response.data.supplier.name + " was successfully registered", 
               type: "info", 
-              date: Math.round(new Date(response.data.supplier.createdAt).getTime()), 
+              date: Date.now(),
               status: "new"
             });
         }

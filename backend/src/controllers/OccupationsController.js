@@ -3,11 +3,6 @@ const { Occupation } = require('../models');
 module.exports = {
   async post (req, res) {
     try {
-      // const occupations = ["Engineer", "Project manager", "Admin", "Accountant", "CEO", "CFO", "CTO"];
-      // for(let i = 0; i < occupations.length; i++) {
-      //   console.log(occupations[i]);
-      //   await Occupation.create({name: occupations[i]});
-      // }
       const occupation = await Occupation.create(req.body.name);
       const occupationJson = occupation.toJSON();
       res.send({

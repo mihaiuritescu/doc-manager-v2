@@ -190,13 +190,12 @@ export default class ReportComponent extends Vue {
     if(this.checkForm()) {
       try {
         const response = await FormsService.submitReport(this.report);
-        console.log(response);
         if(response && response.data) {
           this.clearForm();
           this.$store.commit("addNotification", 
             { message: "The report was successfully registered", 
               type: "info", 
-              date: Math.round(new Date(response.data.report.createdAt).getTime()), 
+              date: Date.now(),
               status: "new"
             });
         }

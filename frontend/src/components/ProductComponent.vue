@@ -12,7 +12,7 @@
           dark
           v-bind="attrs"
           v-on="on"
-          @click="fetchSupSupliers"
+          @click="fetchSupliers"
         >
           New product
         </v-btn>
@@ -138,7 +138,7 @@ export default class productComponent extends Vue {
           this.$store.commit("addNotification", 
             { message: "Product " + response.data.product.name + " successfully registered", 
               type: "info", 
-              date: Math.round(new Date(response.data.product.createdAt).getTime()), 
+              date: Date.now(),
               status: "new"
             });
         }
@@ -168,7 +168,7 @@ export default class productComponent extends Vue {
     return true;
   }
 
-  private async fetchSupSupliers() {
+  private async fetchSupliers() {
     const suppliers = (await FormsService.getSuppliers()).data;
     suppliers.forEach( (supplier: Supplier) => {
       this.suppliers.push(supplier.name);

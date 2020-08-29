@@ -5,6 +5,7 @@ const ReportsController = require('./controllers/ReportsController');
 const ProductsController = require('./controllers/ProductsController');
 const DepartmentsController = require('./controllers/DepartmentsController');
 const OccupationsController = require('./controllers/OccupationsController');
+const OrdersController = require('./controllers/OrdersController');
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy');
 
 module.exports = (app) => {
@@ -27,4 +28,7 @@ module.exports = (app) => {
 
   app.post('/occupation', OccupationsController.post);
   app.get('/occupation', OccupationsController.getAll);
+
+  app.post('/order', OrdersController.post);
+  app.get('/order', OrdersController.getAll);
 }

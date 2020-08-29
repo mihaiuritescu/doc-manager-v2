@@ -31,9 +31,6 @@
         <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
         <v-toolbar-title>DocManager</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn @click="addNotif" icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
         <notifications-component></notifications-component>
         <user-profile-component></user-profile-component>
       </v-app-bar>
@@ -43,7 +40,7 @@
 
         <grid-layout
           :layout.sync="layout"
-          :col-num="8"
+          :col-num="12"
           :col="{ lg: 8, md: 6, sm: 6, xs: 4, xxs: 2 }"
           :row-height="175"
           :is-draggable="true"
@@ -130,17 +127,6 @@ export default class DashboardComponent extends Vue {
     {"x":2,"y":1,"w":2,"h":2,"i":"5"},
   ];
 
-  private addNotif() {
-    // console.log(Math.round(new Date("2020-08-28T13:55:03.825Z").getTime()));
-    console.log(Date.now());
-
-    // this.$store.commit("addNotification", 
-    //   { message: "template notificationtemplate notificationtemplate", 
-    //     type: "warning", 
-    //     date: 1597387248687, 
-    //     status: "new"
-    //   });
-  }
 }
 </script>
 

@@ -4,6 +4,7 @@ export interface Credentials {
 }
 
 export interface User {
+  id: number,
   email: string,
   password: string,
   firstname: string,
@@ -77,7 +78,8 @@ export interface SimpleProduct {
 }
 
 export interface Order {
-  userEmail: string,
+  userId: number,
   products: SimpleProduct[],
-  totalPrice: number
+  totalPrice: number,
+  status: string
 }

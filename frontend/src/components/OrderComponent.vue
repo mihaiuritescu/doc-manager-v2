@@ -12,6 +12,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="fetchProducts"
         >
           New order
         </v-btn>
@@ -72,7 +73,7 @@
         </v-card>
         <v-card class="order-card order-options">
           <v-card-title>Order details</v-card-title>
-          <v-card-text>
+          <v-card-text class="order-cart-and-user d-flex flex-column justify-space-between">
             <div class="order-cart">
               <span class="d-flex order-cart-header">
                 <span class="order-cart-product-name">Product</span>
@@ -110,6 +111,14 @@
                     <span>{{ item.price * item.quantity + ' eur'}}</span>
                   </div>
                 </div>
+                <div 
+                  v-if="selectedProducts.length === 0" 
+                  class="order-no-products-added d-flex justify-center align-center"
+                >
+                  <div class="d-flex">
+                    No products added in cart
+                  </div>
+                </div>
               </div>
               <span class="d-flex order-cart-footer">
                 <span class="order-cart-product-name">Total</span>
@@ -118,7 +127,7 @@
               </span>
             </div>
             <div class="order-user-details d-flex-column">
-              <div>User details</div>
+              <div class="order-cart-user-details-text">User details</div>
               <div class="d-flex justify-space-between">
                 <v-text-field
                   class="register-field"
@@ -141,24 +150,47 @@
                   disabled
                 ></v-text-field>
               </div>
+              <div class="d-flex justify-space-between">
+                <v-text-field
+                  class="register-field"
+                  color="accent"
+                  label="E-mail"
+                  name="email"
+                  prepend-icon="mdi-at"
+                  type="text"
+                  v-model="user.email"
+                  disabled
+                ></v-text-field>
+                <v-text-field
+                  class="register-field"
+                  color="accent"
+                  label="Phone"
+                  name="phone"
+                  prepend-icon="mdi-phone"
+                  type="text"
+                  v-model="user.phone"
+                  disabled
+                ></v-text-field>
+              </div>
+              <div class="d-flex justify-space-between order-dialog-footer">
+                <v-btn
+                  color="primary"
+                  outlined
+                  @click="clearForm"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  :disabled="selectedProducts.length === 0"
+                  @click="submitRequest"
+                >
+                  Submit order
+                </v-btn>
+              </div>
             </div>
           </v-card-text>
         </v-card>
-      </div>
-      <div class="d-flex justify-space-between order-dialog-footer">
-        <v-btn
-          color="primary"
-          outlined
-          @click="clearForm"
-        >
-          Cancel
-        </v-btn>
-        <v-btn
-          color="primary"
-          @click="submitRequest"
-        >
-          Submit order
-        </v-btn>
       </div>
     </v-dialog>
   </div>
@@ -231,35 +263,40 @@ export default class OrderComponent extends Vue {
   }
 
   private async submitRequest() {
-    console.log(this.products);
-    // if(this.checkForm() && this.checkEmail() === true) {
-    //   try {
-    //     const response = await FormsService.submitOrder(this.order);
-    //     if(response && response.data) {
-    //       this.clearForm();
-    //       this.$store.commit("addNotification", 
-    //         { message: "order " + response.data.order.name + " was successfully registered", 
-    //           type: "info", 
-    //           date: Math.round(new Date(response.data.order.createdAt).getTime()), 
-    //           status: "new"
-    //         });
-    //     }
-    //   } catch (error) {
-    //     this.error = error.response.data.error;
-    //     this.$store.commit("addNotification", 
-    //       { message: error, 
-    //         type: "error", 
-    //         date: Date.now(), 
-    //         status: "new"
-    //       });
-    //   }
-    // } else this.error = "Please fill all required fields";
+    this.products.forEach(item => {
+      if (item.selected) {
+        this.order.products.push({ productId: item.id, quantity: item.quantity } as SimpleProduct);
+      }
+    });
+    this.order.totalPrice = this.totals.totalPrice;
+    this.order.status = "new";
+    try {
+      const response = await FormsService.submitOrder(this.order);
+      if(response && response.data) {
+        this.clearForm();
+        this.$store.commit("addNotification", 
+          { message: "Order with number " + response.data.orderNumber + " was successfully registered", 
+            type: "info", 
+            date: Date.now(), 
+            status: "new"
+          });
+      }
+    } catch (error) {
+      this.error = error.response.data.error;
+      this.$store.commit("addNotification", 
+        { message: error, 
+          type: "error", 
+          date: Date.now(), 
+          status: "new"
+        });
+    }
   }
 
   private clearForm(): void {
-    // this.dialog = false;
-    // this.error = "";
-    // this.order = {} as Order;
+    this.dialog = false;
+    this.error = "";
+    this.order.totalPrice = 0;
+    this.order.products = [] as SimpleProduct[];
   }
 
   private checkForm() {
@@ -270,14 +307,13 @@ export default class OrderComponent extends Vue {
     // return true;
   }
 
-  private async mounted() {
+  private async fetchProducts() {
     this.products = (await FormsService.getProducts()).data;
-    console.log(this.products);
     this.order = {
-      userEmail: this.user.email,
+      userId: this.user.id,
       products: [] as SimpleProduct[],
       totalPrice: 0
-    };
+    } as Order;
   }
 }
 </script>>
@@ -298,7 +334,7 @@ export default class OrderComponent extends Vue {
 
 .order-dialog-wrapper {
   width: 100% !important;
-  height: 850px !important;
+  height: 775px !important;
   background-color: white;
   padding: 15px !important;
 }
@@ -310,7 +346,7 @@ export default class OrderComponent extends Vue {
 
 .order-card {
   width: 49% !important;
-  max-height: 820px !important;
+  max-height: 100% !important;
   padding: 15px !important;
 }
 
@@ -321,14 +357,16 @@ export default class OrderComponent extends Vue {
 // }
 
 .order-product-list-content {
-  max-height: 700px !important;
+  max-height: 630px !important;
   overflow: auto;
 }
 
 .order-cart-item-list {
   border-bottom: solid 1px rgba(0, 0, 0, 0.2) !important;
-  min-height: 145px;
+  min-height: 310px;
+  max-height: 310px;
   margin-bottom: 10px;
+  overflow: auto;
 }
 
 .order-list-item {
@@ -341,7 +379,7 @@ export default class OrderComponent extends Vue {
 }
 
 .order-product-supplier {
-  font-style: italic;;
+  font-style: italic;
 }
 
 .order-price {
@@ -363,6 +401,10 @@ export default class OrderComponent extends Vue {
   margin-bottom: 10px;
   font-weight: bold;
   border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+}
+
+.order-no-products-added {
+  height: 305px;
 }
 
 .order-cart-item {
@@ -421,5 +463,21 @@ export default class OrderComponent extends Vue {
   justify-content: flex-end;
   align-items: center;
   width: 20%;
+  padding-right: 10px;
+}
+
+.order-cart-and-user {
+  height: calc(100% - 64px) !important;
+  padding-bottom: 0 !important;
+}
+
+.order-cart-user-details-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: .0125em;
+  line-height: 2rem;
+  word-break: break-all;
+  color: rgba(0,0,0,.87);
+  margin-bottom: 10px;
 }
 </style>>
