@@ -43,7 +43,7 @@
                 name="password"
                 prepend-icon="mdi-lock"
                 type="password"
-                :rules="[() => !!credentials.password && credentials.password.length >= 8 || 'Address must be at least 8 characters long']"
+                :rules="[() => !!credentials.password && credentials.password.length >= 8 || 'Password must be at least 8 characters long']"
               ></v-text-field>
             </v-form>
             <span v-if="error" class="register-error">
@@ -86,11 +86,8 @@ export default class LoginComponent extends Vue {
     if(this.checkForm() && this.checkEmail() === true) {
       try {
         const response = await AuthService.login(this.credentials);
-        this.$store.dispatch("setToken", response.data.token);
-        delete response.data.user.id;
-        delete response.data.user.createdAt;
-        delete response.data.user.updatedAt;
-        this.$store.dispatch("setUser", response.data.user);
+        this.$store.commit("setToken", response.data.token);
+        this.$store.commit("setUser", response.data.user);
         this.error = "";
         this.$router.push("dashboard");
       } catch (error) {

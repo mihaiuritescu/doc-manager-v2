@@ -200,9 +200,23 @@ export default class HolidayRequestComponent extends Vue {
     if(this.checkForm() && this.holidayLenght > 0) {
       try {
         const response = await FormsService.submitHolidayRequest(this.holidayRequest);
-        if(response) this.clearForm();
+        if(response && response.data) {
+          this.clearForm();
+          this.$store.commit("addNotification", 
+            { message: "The holiday request was successfully registered", 
+              type: "info", 
+              date: Math.round(new Date(response.data.form.createdAt).getTime()), 
+              status: "new"
+            });
+        }
       } catch (error) {
         this.error = error.response.data.error;
+        this.$store.commit("addNotification", 
+          { message: error, 
+            type: "error", 
+            date: Date.now(), 
+            status: "new"
+          });
       }
     } else this.error = "All fields are required and holiday length should be > 0";
   }

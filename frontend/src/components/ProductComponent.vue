@@ -133,9 +133,23 @@ export default class productComponent extends Vue {
     if(this.checkForm()) {
       try {
         const response = await FormsService.submitProduct(this.product);
-        if(response) this.clearForm();
+        if(response && response.data && response.data.product) {
+          this.clearForm();
+          this.$store.commit("addNotification", 
+            { message: "Product " + response.data.product.name + " successfully registered", 
+              type: "info", 
+              date: Math.round(new Date(response.data.product.createdAt).getTime()), 
+              status: "new"
+            });
+        }
       } catch (error) {
         this.error = error.response.data.error;
+        this.$store.commit("addNotification", 
+          { message: error, 
+            type: "error", 
+            date: Date.now(), 
+            status: "new"
+          });
       }
     } else this.error = "Please fill all required fields";
   }

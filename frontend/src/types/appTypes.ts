@@ -57,3 +57,27 @@ export interface Product {
   price: number,
   supplier: string,
 }
+
+export interface ComplexProduct {
+  id: number,
+  name: string,
+  description: string,
+  price: number,
+  supplier: string,
+  supplierId: boolean,
+  selected: boolean,
+  createdAt: string,
+  updatedAt: string,
+  quantity: number
+}
+
+export interface SimpleProduct {
+  productId: number,
+  quantity: number
+}
+
+export interface Order {
+  userEmail: string,
+  products: SimpleProduct[],
+  totalPrice: number
+}

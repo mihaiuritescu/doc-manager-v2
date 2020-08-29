@@ -97,6 +97,7 @@ import HolidayRequestComponent from "@/components/HolidayRequestComponent.vue";
 import ReportComponent from "@/components/ReportComponent.vue";
 import SupplierComponent from "@/components/SupplierComponent.vue";
 import ProductComponent from "@/components/ProductComponent.vue";
+import OrderComponent from "@/components/OrderComponent.vue";
 import VueGridLayout from "vue-grid-layout";
 
 @Component({
@@ -107,6 +108,7 @@ import VueGridLayout from "vue-grid-layout";
     HolidayRequestComponent,
     ReportComponent,
     ProductComponent,
+    OrderComponent,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   }
@@ -124,17 +126,20 @@ export default class DashboardComponent extends Vue {
     {"x":2,"y":0,"w":2,"h":1,"i":"1", comp: ReportComponent, resizable: false },
     {"x":4,"y":0,"w":2,"h":1,"i":"2", comp: SupplierComponent, resizable: false },
     {"x":6,"y":0,"w":2,"h":1,"i":"3", comp: ProductComponent, resizable: false },
-    {"x":0,"y":1,"w":2,"h":2,"i":"4"},
+    {"x":0,"y":1,"w":2,"h":1,"i":"4", comp: OrderComponent, resizable: false },
     {"x":2,"y":1,"w":2,"h":2,"i":"5"},
   ];
 
   private addNotif() {
-    this.$store.dispatch("addNotification", 
-      { message: "template notificationtemplate notificationtemplate", 
-        type: "warning", 
-        date: 1597387248687, 
-        status: "new"
-      });
+    // console.log(Math.round(new Date("2020-08-28T13:55:03.825Z").getTime()));
+    console.log(Date.now());
+
+    // this.$store.commit("addNotification", 
+    //   { message: "template notificationtemplate notificationtemplate", 
+    //     type: "warning", 
+    //     date: 1597387248687, 
+    //     status: "new"
+    //   });
   }
 }
 </script>

@@ -242,8 +242,8 @@ export default class RegisterComponent extends Vue {
     if(this.checkForm() && this.checkEmail() === true && this.matchPwd() === true) {
       try {
         const response = await AuthService.register(this.user);
-        this.$store.dispatch("setToken", response.data.token);
-        this.$store.dispatch("setUser", response.data.user);
+        this.$store.commit("setToken", response.data.token);
+        this.$store.commit("setUser", response.data.user);
         this.$router.push("dashboard");
       } catch (error) {
         this.error = error.response.data.error;

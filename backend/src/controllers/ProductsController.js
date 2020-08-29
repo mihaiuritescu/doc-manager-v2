@@ -26,9 +26,32 @@ module.exports = {
   },
   async getAll (req, res) {
     try {
+
+      async function asyncForEach(array, callback) {
+        for (let index = 0; index < array.length; index++) {
+          await callback(array[index], index, array);
+        }
+      }
+
+      const getSupplierName = async (array) => {
+        await asyncForEach( array, async function(element) {
+          const supplier = await Supplier.findOne({ where: { id: element.dataValues.supplierId } });
+          if (supplier) element.dataValues.supplier = supplier.dataValues.name;
+          else element.dataValues.supplier = "undefined";
+        });
+        res.send(array);
+      }
+
       let products = null;
       products = await Product.findAll({});
-      res.send(products);
+
+      if(products) getSupplierName(products);
+      else {
+        res.status(500).send({
+          error: 'An error has occured trying to fetch the products'
+        })
+      }
+
     } catch (err) {
       console.log(err);
       res.status(500).send({

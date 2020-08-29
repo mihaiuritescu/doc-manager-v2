@@ -38,5 +38,28 @@ html {
   font-size: 100px !important;
   color: #4caf50 !important;
 }
+
+::-webkit-scrollbar {
+  height: 3px;
+  width: 5px;
+}
+::-webkit-scrollbar-button {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-track {
+  background: #eee;
+  border: thin solid lightgray;
+  box-shadow: 0px 0px 3px #dfdfdf inset;
+  border-radius: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border: thin solid gray;
+  border-radius: 9px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7d7d7d;
+}
 </style>
 

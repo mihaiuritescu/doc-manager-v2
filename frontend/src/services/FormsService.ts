@@ -20,6 +20,9 @@ export default {
   submitProduct(product: unknown) {
     return Api().post("product", product);
   },
+  getProducts() {
+    return Api().get("product");
+  },
 
   getDepartments() {
     return Api().get("department");

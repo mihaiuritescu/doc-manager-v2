@@ -136,9 +136,23 @@ export default class SupplierComponent extends Vue {
     if(this.checkForm() && this.checkEmail() === true) {
       try {
         const response = await FormsService.submitSupplier(this.supplier);
-        if(response) this.clearForm();
+        if(response && response.data) {
+          this.clearForm();
+          this.$store.commit("addNotification", 
+            { message: "Supplier " + response.data.supplier.name + " was successfully registered", 
+              type: "info", 
+              date: Math.round(new Date(response.data.supplier.createdAt).getTime()), 
+              status: "new"
+            });
+        }
       } catch (error) {
         this.error = error.response.data.error;
+        this.$store.commit("addNotification", 
+          { message: error, 
+            type: "error", 
+            date: Date.now(), 
+            status: "new"
+          });
       }
     } else this.error = "Please fill all required fields";
   }

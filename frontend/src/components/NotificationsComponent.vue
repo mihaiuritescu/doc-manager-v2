@@ -171,12 +171,12 @@ export default class NotificationsComponent extends Vue {
   }
 
   private markAsRead(): void {
-    this.$store.dispatch("markNotificationsAsRead");
+    this.$store.commit("markNotificationsAsRead");
     this.updateNotificationBadge();
   }
 
   private clearNotifications(): void {
-    this.$store.dispatch("clearNotifications");
+    this.$store.commit("clearNotifications");
   }
 
   mounted(): void {

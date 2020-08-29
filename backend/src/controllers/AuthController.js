@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
 function jwtSignUser (user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
+  const ONE_WEEK = 60 * 60 * 24 * 7;
   return jwt.sign(user, config.authentication.jwtSecret, {
     expiresIn: ONE_WEEK
   })
@@ -14,26 +14,26 @@ module.exports = {
     try {
       const occupation = await Occupation.findOne({ where: { name: req.body.occupation } });
       const department = await Department.findOne({ where: { name: req.body.department } });
-      
+
       if(occupation && department) {
         const newUser = {
           email: req.body.email,
-          password: req.body.email,
-          firstname: req.body.email,
-          lastname: req.body.email,
-          address: req.body.email,
-          postalcode: req.body.email,
-          city: req.body.email,
-          country: req.body.email,
-          phone: req.body.email,
+          password: req.body.password,
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          address: req.body.address,
+          postalcode: req.body.postalcode,
+          city: req.body.city,
+          country: req.body.country,
+          phone: req.body.phone,
           occupation: occupation.dataValues.id,
           department: department.dataValues.id,
         };
-        const user = await User.create(newUser);
-        const userJson = user.toJSON();
+        await User.create(newUser);
+        const user = req.body;
         res.send({
-          user: userJson,
-          token: jwtSignUser(userJson)
+          user: user,
+          token: jwtSignUser(user)
         })
       }
     } catch (err) {
@@ -58,6 +58,14 @@ module.exports = {
         })
       }
 
+      const occupation = await Occupation.findOne({ where: { id: user.occupation } });
+      const department = await Department.findOne({ where: { id: user.department } });
+
+      if(occupation && department) {
+        user.occupation = occupation.dataValues.name;
+        user.department = department.dataValues.name;
+      }
+      
       const isPasswordValid = await user.comparePassword(password);
       // const isPasswordValid = password === user.password;
       if (!isPasswordValid) {
