@@ -7,7 +7,7 @@
       transition="slide-x-reverse-transition"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-avatar color="blue" v-bind="attrs" v-on="on">
+        <v-avatar color="primary" v-bind="attrs" v-on="on">
           <v-skeleton-loader
             v-if="!user"
             type="avatar"

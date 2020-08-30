@@ -1,4 +1,4 @@
-const { OrderProduct, Order } = require('../models');
+const { OrderProduct, Order, User, Department, Occupation } = require('../models');
 
 module.exports = {
   async post (req, res) {
@@ -42,38 +42,58 @@ module.exports = {
     }
   },
   async getAll (req, res) {
-    // try {
+    try {
 
-    //   async function asyncForEach(array, callback) {
-    //     for (let index = 0; index < array.length; index++) {
-    //       await callback(array[index], index, array);
-    //     }
-    //   }
+      async function asyncForEach(array, callback) {
+        for (let index = 0; index < array.length; index++) {
+          await callback(array[index], index, array);
+        }
+      }
 
-    //   const getSupplierName = async (array) => {
-    //     await asyncForEach( array, async function(element) {
-    //       const supplier = await Supplier.findOne({ where: { id: element.dataValues.supplierId } });
-    //       if (supplier) element.dataValues.supplier = supplier.dataValues.name;
-    //       else element.dataValues.supplier = "undefined";
-    //     });
-    //     res.send(array);
-    //   }
+      const getOrderDetails = async (array) => {
+        await asyncForEach( array, async function(element) {
+          const user = await User.findOne({ where: { id: element.dataValues.userId } });
+          if (user) {
+            element.dataValues.userName = user.dataValues.firstname + " " + user.dataValues.lastname;
 
-    //   let products = null;
-    //   products = await Product.findAll({});
+            const deptId = user.dataValues.department;
+            const occId = user.dataValues.occupation;
 
-    //   if(products) getSupplierName(products);
-    //   else {
-    //     res.status(500).send({
-    //       error: 'An error has occured trying to fetch the products'
-    //     })
-    //   }
+            const deptName = await Department.findOne({ where: { id: deptId } });
+            const occName = await Occupation.findOne({ where: { id: occId } });
 
-    // } catch (err) {
-    //   console.log(err);
-    //   res.status(500).send({
-    //     error: 'An error has occured trying to fetch the products'
-    //   })
-    // }
+            if (deptName && occName) {
+              element.dataValues.userDept = deptName.dataValues.name;
+              element.dataValues.userOcc = occName.dataValues.name;
+            } else {
+              element.dataValues.userDept = "undefined";
+              element.dataValues.userOcc = "undefined";
+            }
+
+          } else {
+            res.status(500).send({
+              error: 'An error has occured trying to fetch the orders'
+            })
+          }
+        });
+        res.send(array);
+      }
+
+      let orders = null;
+      orders = await Order.findAll({});
+
+      if(orders) getOrderDetails(orders);
+      else {
+        res.status(500).send({
+          error: 'An error has occured trying to fetch the orders'
+        })
+      }
+
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        error: 'An error has occured trying to fetch the orders'
+      })
+    }
   },
 }

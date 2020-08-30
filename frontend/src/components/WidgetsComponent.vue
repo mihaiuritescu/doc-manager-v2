@@ -68,10 +68,11 @@ export default class WidgetsComponent extends Vue {
 
 <style lang="scss">
 .widgets-content {
-  background-color: white; 
-  height: calc(100% - 112px); 
+  background-color: #eee;
+  height: calc(100% - 64px); 
+  // height: 100%; 
   width: 100%;
-  max-height: 1185px;
+  max-height: 872px;
   overflow: auto;
   padding: 10px;
 }

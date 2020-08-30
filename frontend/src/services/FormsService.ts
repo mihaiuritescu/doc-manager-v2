@@ -20,6 +20,9 @@ export default {
   submitProduct(product: unknown) {
     return Api().post("product", product);
   },
+  updateProducts(product: unknown) {
+    return Api().put("product", product);
+  },
   getProducts() {
     return Api().get("product");
   },
@@ -38,4 +41,11 @@ export default {
   getOccupations() {
     return Api().get("occupation");
   },
+
+  getEmployees() {
+    return Api().get("employee");
+  },
+  updateEmployees(employee: unknown) {
+    return Api().put("employee", employee);
+  }
 };

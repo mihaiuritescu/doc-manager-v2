@@ -24,6 +24,67 @@ module.exports = {
       })
     }
   },
+
+  async put (req, res) {
+    try {
+      async function asyncForEach(array, callback) {
+        for (let index = 0; index < array.length; index++) {
+          await callback(array[index], index, array);
+        }
+      }
+
+      const updateProducts = async (productsList) => {
+        await asyncForEach( productsList, async function(element) {
+          const newProduct = {
+            name: element.name,
+            description: element.description,
+            price: element.price,
+            supplierId: element.supplierId,
+          };
+          await Product.update(newProduct, {
+            where: {
+              id: element.id
+            }
+          });
+        });
+        res.send({ status: "success" });
+      }
+
+      const deleteProducts = async (productsList) => {
+        await asyncForEach( productsList, async function(element) {
+          await Product.destroy({
+            where: {
+              id: element.id
+            }
+          });
+        });
+        res.send({ status: "success" });
+      }
+      
+      const action = req.body.action;
+      const productsList = req.body.array;
+      
+      if(action) {
+        switch (action) {
+          case "update":
+            updateProducts(productsList);
+            break;
+          case "delete":
+            deleteProducts(productsList);
+              break;
+          default:
+            break;
+        }
+      }
+
+    } catch (err) {
+      console.log(err);
+      res.status(400).send({
+        error: 'There was a problem updating the product list. Please try again.'
+      })
+    }
+  },
+
   async getAll (req, res) {
     try {
 

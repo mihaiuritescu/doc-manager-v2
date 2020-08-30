@@ -7,6 +7,7 @@ const ProductsController = require('./controllers/ProductsController');
 const DepartmentsController = require('./controllers/DepartmentsController');
 const OccupationsController = require('./controllers/OccupationsController');
 const OrdersController = require('./controllers/OrdersController');
+const EmployeesController = require('./controllers/EmployeesController');
 
 const isAuthenticated = require('./policies/isAuthenticated');
 
@@ -23,6 +24,7 @@ module.exports = (app) => {
   app.get('/supplier', isAuthenticated, SuppliersController.getAll);
 
   app.post('/product', isAuthenticated, ProductsController.post);
+  app.put('/product', isAuthenticated, ProductsController.put);
   app.get('/product', isAuthenticated, ProductsController.getAll);
 
   app.post('/department', DepartmentsController.post);
@@ -33,4 +35,7 @@ module.exports = (app) => {
 
   app.post('/order', isAuthenticated, OrdersController.post);
   app.get('/order', isAuthenticated, OrdersController.getAll);
+
+  app.put('/employee', isAuthenticated, EmployeesController.put);
+  app.get('/employee', isAuthenticated, EmployeesController.getAll);
 }

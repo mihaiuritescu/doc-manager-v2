@@ -15,7 +15,6 @@
           :color="badgeColor"
           :content="notificationsCount"
           :value="notificationsCount"
-          bordered
           overlap
         >
           <v-icon class="notifications-bell-icon">mdi-bell-outline</v-icon>

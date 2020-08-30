@@ -33,7 +33,7 @@ module.exports = {
         const user = req.body;
         res.send({
           user: user,
-          token: jwtSignUser(createdUser)
+          token: jwtSignUser(createdUser.dataValues)
         })
       }
     } catch (err) {

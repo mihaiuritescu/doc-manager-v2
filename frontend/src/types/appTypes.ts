@@ -69,7 +69,9 @@ export interface ComplexProduct {
   selected: boolean,
   createdAt: string,
   updatedAt: string,
-  quantity: number
+  quantity: number,
+  edited: boolean,
+  deleted: boolean
 }
 
 export interface SimpleProduct {
@@ -81,4 +83,36 @@ export interface Order {
   products: SimpleProduct[],
   totalPrice: number,
   status: string
+}
+
+export interface ComplexOrder {
+  id: number,
+  userId: number,
+  userName: string,
+  userDept: string,
+  userOcc: string,
+  totalValue: number,
+  status: string,
+  createdAt: string,
+  updatedAt: string
+}
+
+export interface Employee {
+  address: string,
+  city: string,
+  country: string,
+  createdAt: string,
+  department: number,
+  departmentName: string,
+  email: string,
+  firstname: string,
+  id: number,
+  lastname: string,
+  occupation: number,
+  occupationName: string,
+  phone: string,
+  postalcode: string,
+  updatedAt: string,
+  edited: boolean,
+  deleted: boolean
 }
