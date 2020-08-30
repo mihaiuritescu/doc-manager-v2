@@ -8,7 +8,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="primary"
+          color="secondary"
           dark
           v-bind="attrs"
           v-on="on"
@@ -19,7 +19,7 @@
       </template>
 
       <!-- Dialog content -->
-      <div class="order-dialog-title headline">Order</div>
+      <div class="order-dialog-title secondary headline">Order</div>
       <div class="d-flex justify-space-between order-dialog-wrapper">
         <v-card class="order-card order-product-list">
           <v-list two-line>
@@ -47,7 +47,7 @@
                   <v-list-item-content>
                     <v-list-item-title v-text="item.name"></v-list-item-title>
                     <v-list-item-subtitle 
-                      class="text--primary order-product-supplier" 
+                      class="text--secondary order-product-supplier" 
                       v-text="item.supplier">
                     </v-list-item-subtitle>
                     <v-list-item-subtitle v-text="item.description"></v-list-item-subtitle>
@@ -174,14 +174,14 @@
               </div>
               <div class="d-flex justify-space-between order-dialog-footer">
                 <v-btn
-                  color="primary"
+                  color="secondary"
                   outlined
                   @click="clearForm"
                 >
                   Cancel
                 </v-btn>
                 <v-btn
-                  color="primary"
+                  color="secondary"
                   :disabled="selectedProducts.length === 0"
                   @click="submitRequest"
                 >
@@ -299,18 +299,9 @@ export default class OrderComponent extends Vue {
     this.order.products = [] as SimpleProduct[];
   }
 
-  private checkForm() {
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // for (let [key, value] of Object.entries(this.order)) {
-    //   if(!value) return false;
-    // }
-    // return true;
-  }
-
   private async fetchProducts() {
     this.products = (await FormsService.getProducts()).data;
     this.order = {
-      userId: this.user.id,
       products: [] as SimpleProduct[],
       totalPrice: 0
     } as Order;
@@ -327,7 +318,6 @@ export default class OrderComponent extends Vue {
 .order-dialog-title {
   width: 100%;
   height: 64px;
-  background-color: #4caf50;
   color: white;
   padding: 16px;
 }

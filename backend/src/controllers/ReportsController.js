@@ -6,7 +6,7 @@ module.exports = {
       const user = await User.findOne({ where: { email: req.body.userEmail } });
       if(user) {
         const reportReq = {
-          userId: user.dataValues.id,
+          userId: req.user.id,
           address: req.body.address,
           phone: req.body.phone,
           locationManager: req.body.locationManager,

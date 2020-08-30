@@ -8,7 +8,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="primary"
+          color="secondary"
           dark
           v-bind="attrs"
           v-on="on"
@@ -19,7 +19,7 @@
 
       <!-- Dialog content -->
       <v-card>
-        <v-card-title class="headline primary white--text">
+        <v-card-title class="headline secondary white--text">
           Report
         </v-card-title>
 
@@ -145,14 +145,14 @@
 
         <v-card-actions class="d-flex justify-space-between report-actions">
           <v-btn
-            color="primary"
+            color="secondary"
             outlined
             @click="clearForm"
           >
             Cancel
           </v-btn>
           <v-btn
-            color="primary"
+            color="secondary"
             @click="submitRequest"
           >
             Submit report

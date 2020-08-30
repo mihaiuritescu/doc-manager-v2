@@ -29,11 +29,11 @@ module.exports = {
           occupation: occupation.dataValues.id,
           department: department.dataValues.id,
         };
-        await User.create(newUser);
+        const createdUser = await User.create(newUser);
         const user = req.body;
         res.send({
           user: user,
-          token: jwtSignUser(user)
+          token: jwtSignUser(createdUser)
         })
       }
     } catch (err) {

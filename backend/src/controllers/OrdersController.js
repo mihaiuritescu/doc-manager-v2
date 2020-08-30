@@ -22,9 +22,8 @@ module.exports = {
         res.send({ orderNumber: orderId });
       }
 
-      console.log(req.body);
       const NewOrder = {
-        userId: req.body.userId,
+        userId: req.user.id,
         status: req.body.status,
         totalValue: req.body.totalPrice
       }

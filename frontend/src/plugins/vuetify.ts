@@ -7,7 +7,7 @@ Vue.use(Vuetify);
 
 const lightTheme = {
   primary: "#4caf50",
-  secondary: "#8bc34a",
+  secondary: "#ec662c",
   accent: "#087f24",
   error: "#f44336",
   warning: "#ff9800",

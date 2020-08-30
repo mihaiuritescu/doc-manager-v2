@@ -78,7 +78,6 @@ export interface SimpleProduct {
 }
 
 export interface Order {
-  userId: number,
   products: SimpleProduct[],
   totalPrice: number,
   status: string

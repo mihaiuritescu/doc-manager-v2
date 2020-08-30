@@ -8,7 +8,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="primary"
+          color="secondary"
           dark
           v-bind="attrs"
           v-on="on"
@@ -20,7 +20,7 @@
 
       <!-- Dialog content -->
       <v-card>
-        <v-card-title class="headline primary white--text">
+        <v-card-title class="headline secondary white--text">
           Product
         </v-card-title>
 
@@ -75,7 +75,7 @@
               <v-select
                 class="product-field"
                 color="accent"
-                prepend-icon="office-building"
+                prepend-icon="mdi-office-building"
                 v-model="product.supplier"
                 label="Supplier"
                 outlined
@@ -90,14 +90,14 @@
 
         <v-card-actions class="d-flex justify-space-between product-actions">
           <v-btn
-            color="primary"
+            color="secondary"
             outlined
             @click="clearForm"
           >
             Cancel
           </v-btn>
           <v-btn
-            color="primary"
+            color="secondary"
             @click="submitRequest"
           >
             Submit product

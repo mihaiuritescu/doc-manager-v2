@@ -13,7 +13,8 @@ module.exports = {
         instanceName: 'SQLEXPRESS'
       },
       // storage: path.resolve(__dirname, '../../tabtracker.sqlite')
-      storage: '../../tabtracker.sqlite'
+      storage: '../../tabtracker.sqlite',
+      logging: false
     }
   },
   authentication: {

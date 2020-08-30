@@ -101,7 +101,7 @@
               depressed
               tile
               class="user-profile-profile-button"
-              to="/"
+              @click="logout"
               >Logout</v-btn
             >
           </div>
@@ -133,6 +133,13 @@ export default class UserProfileComponent extends Vue {
 
   private openSettingsDialog(): void {
     this.$emit("open-settings-dialog");
+  }
+
+  private logout(): void {
+    this.$store.commit("setToken", null);
+    this.$store.commit("setUser", null);
+    this.$store.commit("clearNotifications");
+    this.$router.push("login");
   }
 }
 </script>

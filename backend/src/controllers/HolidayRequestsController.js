@@ -6,7 +6,7 @@ module.exports = {
       const user = await User.findOne({ where: { email: req.body.userEmail } });
       if(user) {
         const formReq = {
-          userId: user.dataValues.id,
+          userId: req.user.id,
           startDate: req.body.startDate,
           endDate: req.body.endDate,
           contact: req.body.contact,

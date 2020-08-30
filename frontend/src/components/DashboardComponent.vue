@@ -1,7 +1,8 @@
 <template>
   <div class="d-flex dashboard-wrapper">
+
     <v-navigation-drawer
-      class="deep-purple accent-4 dashboard-drawer"
+      class="primary dashboard-drawer"
       dark
       permanent
     >
@@ -10,6 +11,7 @@
           v-for="item in items"
           :key="item.title"
           link
+          @click="switchContent(item.title)"
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -23,12 +25,13 @@
     </v-navigation-drawer>
 
     <div class="d-flex-column dashboard-main">
+      
       <!-- Headerbar -->
       <v-app-bar
-        color="deep-purple accent-4"
+        color="primary"
         dark
+        class="dashboard-headerbar"
       >
-        <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
         <v-toolbar-title>DocManager</v-toolbar-title>
         <v-spacer></v-spacer>
         <notifications-component></notifications-component>
@@ -36,44 +39,17 @@
       </v-app-bar>
 
       <!-- Content -->
-      <div class="d-flex dashboard-content">
-
-        <grid-layout
-          :layout.sync="layout"
-          :col-num="12"
-          :col="{ lg: 8, md: 6, sm: 6, xs: 4, xxs: 2 }"
-          :row-height="175"
-          :is-draggable="true"
-          :is-resizable="true"
-          :is-mirrored="false"
-          :vertical-compact="true"
-          :margin="[15, 15]"
-          :use-css-transforms="true"
-          class="dashboard-grid"
-        >
-          <grid-item 
-            v-for="item in layout"
-            :x="item.x"
-            :y="item.y"
-            :w="item.w"
-            :h="item.h"
-            :i="item.i"
-            :is-resizable="item.resizable"
-            :key="item.i"
-            class="d-flex align-center justify-center dashboard-grid-widget"
-          >
-            <component v-if="item.comp" :is="item.comp" :key="item.i"></component>
-            <div v-else> {{item.i}} </div>
-          </grid-item>
-        </grid-layout>
-
-      </div>
+      <widgets-component v-if="widgets"></widgets-component>
+      <employees-component v-if="employees"></employees-component>
+      <products-component v-if="products"></products-component>
+      <documents-component v-if="documents"></documents-component>
 
       <!-- Footer -->
       <v-footer 
         padless 
-        color="deep-purple accent-4"
+        color="primary"
         dark
+        class="dashboard-footer"
       >
         <v-col
           class="text-center"
@@ -83,6 +59,7 @@
         </v-col>
       </v-footer>
     </div>
+
   </div>
 </template>
 
@@ -90,42 +67,65 @@
 import { Component, Vue } from "vue-property-decorator";
 import UserProfileComponent from "@/components/UserProfileComponent.vue";
 import NotificationsComponent from "@/components/NotificationsComponent.vue";
-import HolidayRequestComponent from "@/components/HolidayRequestComponent.vue";
-import ReportComponent from "@/components/ReportComponent.vue";
-import SupplierComponent from "@/components/SupplierComponent.vue";
-import ProductComponent from "@/components/ProductComponent.vue";
-import OrderComponent from "@/components/OrderComponent.vue";
-import VueGridLayout from "vue-grid-layout";
+import WidgetsComponent from "@/components/WidgetsComponent.vue";
+import ProductsComponent from "@/components/ProductsComponent.vue";
+import DocumentsComponent from "@/components/DocumentsComponent.vue";
+import EmployeesComponent from "@/components/EmployeesComponent.vue";
 
 @Component({
   name: "DashboardComponent",
   components: {
     UserProfileComponent,
     NotificationsComponent,
-    HolidayRequestComponent,
-    ReportComponent,
-    ProductComponent,
-    OrderComponent,
-    GridLayout: VueGridLayout.GridLayout,
-    GridItem: VueGridLayout.GridItem
+    WidgetsComponent,
+    ProductsComponent,
+    DocumentsComponent,
+    EmployeesComponent
   }
 })
 export default class DashboardComponent extends Vue {
   private items = [
-    { title: "Dashboard", icon: "mdi-view-dashboard", action: "dashboard" },
-    { title: "Employees", icon: "mdi-account", action: "employees" },
-    { title: "Products", icon: "mdi-monitor", action: "products" },
-    { title: "Documents", icon: "mdi-file-document", action: "documents" },
+    { title: "Widgets", icon: "mdi-view-dashboard" },
+    { title: "Employees", icon: "mdi-account" },
+    { title: "Products", icon: "mdi-monitor" },
+    { title: "Documents", icon: "mdi-file-document" },
   ];
-  private drawer = true;
-  private layout = [
-    {"x":0,"y":0,"w":2,"h":1,"i":"0", comp: HolidayRequestComponent, resizable: false },
-    {"x":2,"y":0,"w":2,"h":1,"i":"1", comp: ReportComponent, resizable: false },
-    {"x":4,"y":0,"w":2,"h":1,"i":"2", comp: SupplierComponent, resizable: false },
-    {"x":6,"y":0,"w":2,"h":1,"i":"3", comp: ProductComponent, resizable: false },
-    {"x":0,"y":1,"w":2,"h":1,"i":"4", comp: OrderComponent, resizable: false },
-    {"x":2,"y":1,"w":2,"h":2,"i":"5"},
-  ];
+
+  private widgets= true;
+  private employees= false;
+  private products= false;
+  private documents= false;
+
+  private switchContent(title: string): void {
+    switch (title) {
+    case "Widgets":
+      this.widgets = true;
+      this.employees = false;
+      this.products = false;
+      this.documents = false;
+      break;
+    case "Employees":
+      this.widgets = false;
+      this.employees = true;
+      this.products = false;
+      this.documents = false;
+      break;
+    case "Products":
+      this.widgets = false;
+      this.employees = false;
+      this.products = true;
+      this.documents = false;
+      break;
+    case "Documents":
+      this.widgets = false;
+      this.employees = false;
+      this.products = false;
+      this.documents = true;
+      break;
+    default:
+      break;
+    }
+  }
 
 }
 </script>
@@ -137,6 +137,18 @@ export default class DashboardComponent extends Vue {
 
 .dashboard-drawer {
   width: 240px !important;
+  // box-shadow: 
+  //   0 5px 5px -3px rgba(0, 0, 0, 0.2), 
+  //   0 8px 10px 1px rgba(0, 0, 0, 0.14), 
+  //   0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: 9px -2px 18px -8px rgba(0,0,0,0.65);
+  z-index: 1;
+}
+
+.dashboard-headerbar {
+  // box-shadow: 0px 10px 66px -12px rgba(0,0,0,0.65) !important;
+  box-shadow: 5px 10px 18px -8px rgba(0,0,0,0.65) !important;
+  z-index: 2 !important;
 }
 
 .dashboard-main {
@@ -144,28 +156,8 @@ export default class DashboardComponent extends Vue {
   width: calc(100% - 240px);
 }
 
-.dashboard-content {
-  background-color: white; 
-  height: calc(100% - 112px); 
-  width: 100%;
-  max-height: 1185px;
-  overflow: auto;
-  padding: 10px;
-}
-
-.dashboard-grid {
-  height: 100%;
-  width: 100%;
-}
-
-.dashboard-grid-widget {
-  padding: 10px;
-  background-color: white;
-  border: solid 1px lightgrey;
-  box-shadow: 
-    0 5px 5px -3px rgba(0,0,0,.2), 
-    0 8px 10px 1px rgba(0,0,0,.14), 
-    0 3px 14px 2px rgba(0,0,0,.12);
-  border-radius: 4px;
+.dashboard-footer {
+  z-index: 2;
+  box-shadow: 1px -6px 18px -8px rgba(0,0,0,0.65) !important;
 }
 </style>

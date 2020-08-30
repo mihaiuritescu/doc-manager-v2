@@ -36,7 +36,7 @@ html {
 
 .app-widget-icon {
   font-size: 100px !important;
-  color: #4caf50 !important;
+  color: #ec662c !important;
 }
 
 ::-webkit-scrollbar {

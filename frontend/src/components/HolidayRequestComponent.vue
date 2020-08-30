@@ -8,7 +8,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="primary"
+          color="secondary"
           dark
           v-bind="attrs"
           v-on="on"
@@ -19,7 +19,7 @@
 
       <!-- Dialog content -->
       <v-card>
-        <v-card-title class="headline primary white--text">
+        <v-card-title class="headline secondary white--text">
           Holiday Request
         </v-card-title>
 
@@ -91,8 +91,8 @@
                 </template>
                 <v-date-picker v-model="holidayRequest.startDate" no-title scrollable>
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="startDateMenu = false">Cancel</v-btn>
-                  <v-btn text color="primary" @click="$refs.startDateMenu.save(holidayRequest.startDate)">OK</v-btn>
+                  <v-btn text color="secondary" @click="startDateMenu = false">Cancel</v-btn>
+                  <v-btn text color="secondary" @click="$refs.startDateMenu.save(holidayRequest.startDate)">OK</v-btn>
                 </v-date-picker>
               </v-menu>
               <v-menu
@@ -116,8 +116,8 @@
                 </template>
                 <v-date-picker v-model="holidayRequest.endDate" no-title scrollable>
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="endDateMenu = false">Cancel</v-btn>
-                  <v-btn text color="primary" @click="$refs.endDateMenu.save(holidayRequest.endDate)">OK</v-btn>
+                  <v-btn text color="secondary" @click="endDateMenu = false">Cancel</v-btn>
+                  <v-btn text color="secondary" @click="$refs.endDateMenu.save(holidayRequest.endDate)">OK</v-btn>
                 </v-date-picker>
               </v-menu>
             </div>
@@ -150,14 +150,14 @@
 
         <v-card-actions class="d-flex justify-space-between holiday-request-actions">
           <v-btn
-            color="primary"
+            color="secondary"
             outlined
             @click="clearForm"
           >
             Cancel
           </v-btn>
           <v-btn
-            color="primary"
+            color="secondary"
             @click="submitRequest"
           >
             Submit new holiday request
