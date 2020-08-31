@@ -195,7 +195,7 @@ export default class ProductsComponent extends Vue {
     } catch (error) {
       this.disabledSave = false;
       this.$store.commit("addNotification", 
-        { message: error, 
+        { message: error.message ? error.message : error, 
           type: "error", 
           date: Date.now(), 
           status: "new"

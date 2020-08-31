@@ -5,9 +5,21 @@ export default {
   submitHolidayRequest(request: unknown) {
     return Api().post("holiday-request", request);
   },
+  updateHolidayRequests(request: unknown) {
+    return Api().put("holiday-request", request);
+  },
+  getHolidayRequests() {
+    return Api().get("holiday-request");
+  },
 
   submitReport(report: unknown) {
     return Api().post("report", report);
+  },
+  updateReports(report: unknown) {
+    return Api().put("report", report);
+  },
+  getReports() {
+    return Api().get("report");
   },
 
   submitSupplier(supplier: unknown) {
@@ -29,6 +41,9 @@ export default {
 
   submitOrder(order: unknown) {
     return Api().post("order", order);
+  },
+  updateOrders(order: unknown) {
+    return Api().put("order", order);
   },
   getOrders() {
     return Api().get("order");

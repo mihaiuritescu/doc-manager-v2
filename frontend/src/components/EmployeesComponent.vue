@@ -185,8 +185,6 @@ export default class EmployeesComponent extends Vue {
     else return this.employees;
   }
 
-  
-
   private async saveChanges() {
     this.disabledSave = true;
     const updatedEmployees = this.employees.filter(item => (item.edited === true && !item.deleted));
@@ -211,7 +209,7 @@ export default class EmployeesComponent extends Vue {
     } catch (error) {
       this.disabledSave = false;
       this.$store.commit("addNotification", 
-        { message: error, 
+        { message: error.message ? error.message : error, 
           type: "error", 
           date: Date.now(), 
           status: "new"

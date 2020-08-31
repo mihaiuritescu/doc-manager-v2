@@ -202,7 +202,7 @@ export default class ReportComponent extends Vue {
       } catch (error) {
         this.error = error.response.data.error;
         this.$store.commit("addNotification", 
-          { message: error, 
+          { message: error.message ? error.message : error, 
             type: "error", 
             date: Date.now(), 
             status: "new"
@@ -216,6 +216,7 @@ export default class ReportComponent extends Vue {
     this.error = "";
     this.report = {} as Report;
     this.report.userEmail = this.user.email;
+    this.report.status = "new";
   }
 
   private checkForm() {
@@ -260,4 +261,4 @@ export default class ReportComponent extends Vue {
 .report-actions {
   padding: 10px 25px !important;
 }
-</style>>
+</style>

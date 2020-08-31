@@ -17,8 +17,12 @@ module.exports = (app) => {
   app.post('/login', AuthController.login);
 
   app.post('/holiday-request', isAuthenticated, HolidayRequestsController.post);
+  app.put('/holiday-request', isAuthenticated, HolidayRequestsController.put);
+  app.get('/holiday-request', isAuthenticated, HolidayRequestsController.getAll);
 
   app.post('/report', isAuthenticated, ReportsController.post);
+  app.put('/report', isAuthenticated, ReportsController.put);
+  app.get('/report', isAuthenticated, ReportsController.getAll);
 
   app.post('/supplier', isAuthenticated, SuppliersController.post);
   app.get('/supplier', isAuthenticated, SuppliersController.getAll);
@@ -34,6 +38,7 @@ module.exports = (app) => {
   app.get('/occupation', OccupationsController.getAll);
 
   app.post('/order', isAuthenticated, OrdersController.post);
+  app.put('/order', isAuthenticated, OrdersController.put);
   app.get('/order', isAuthenticated, OrdersController.getAll);
 
   app.put('/employee', isAuthenticated, EmployeesController.put);

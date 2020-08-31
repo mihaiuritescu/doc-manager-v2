@@ -212,7 +212,7 @@ export default class HolidayRequestComponent extends Vue {
       } catch (error) {
         this.error = error.response.data.error;
         this.$store.commit("addNotification", 
-          { message: error, 
+          { message: error.message ? error.message : error, 
             type: "error", 
             date: Date.now(), 
             status: "new"

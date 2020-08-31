@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { OrderProduct, Order, User, Department, Occupation } = require('../models');
 
 module.exports = {
@@ -55,6 +56,7 @@ module.exports = {
           const user = await User.findOne({ where: { id: element.dataValues.userId } });
           if (user) {
             element.dataValues.userName = user.dataValues.firstname + " " + user.dataValues.lastname;
+            element.dataValues.createdAt = moment(element.dataValues.createdAt).format("YYYY-MM-DD");
 
             const deptId = user.dataValues.department;
             const occId = user.dataValues.occupation;
@@ -96,4 +98,36 @@ module.exports = {
       })
     }
   },
+  async put (req, res) {
+    try {
+      async function asyncForEach(array, callback) {
+        for (let index = 0; index < array.length; index++) {
+          await callback(array[index], index, array);
+        }
+      }
+
+      const updateOrders = async (orders) => {
+        await asyncForEach( orders, async function(element) {
+          const newOrder = {
+            status: element.status,
+          };
+          await Order.update(newOrder, {
+            where: {
+              id: element.id
+            }
+          });
+        });
+        res.send({ status: "success" });
+      }
+      
+      const orders = req.body;
+      updateOrders(orders);
+
+    } catch (err) {
+      console.log(err);
+      res.status(400).send({
+        error: 'There was a problem updating the order list. Please try again.'
+      })
+    }
+  }
 }
