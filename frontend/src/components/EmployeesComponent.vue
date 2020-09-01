@@ -220,7 +220,7 @@ export default class EmployeesComponent extends Vue {
 
   private async fetchEmployees() {
     // this.employees = [] as ComplexProduct[];
-    this.employees = [];
+    this.employees = [] as Employee[];
     this.employees = (await FormsService.getEmployees()).data;
   }
 

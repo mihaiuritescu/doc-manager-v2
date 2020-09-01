@@ -182,6 +182,7 @@ export default class SupplierComponent extends Vue {
 .supplier-wrapper {
   height: 100%;
   width: 100%;
+  padding: 10px;
 }
 
 .supplier-error {

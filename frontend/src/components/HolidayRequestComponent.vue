@@ -253,6 +253,7 @@ export default class HolidayRequestComponent extends Vue {
 .holiday-request-wrapper {
   height: 100%;
   width: 100%;
+  padding: 10px;
 }
 
 .holiday-request-error {

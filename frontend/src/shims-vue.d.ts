@@ -4,3 +4,7 @@ declare module "*.vue" {
 }
 
 declare module "vue-grid-layout";
+declare module "vue-d3-charts";
+declare module "lodash";
+declare module "lodash/random";
+declare module "lodash/map";

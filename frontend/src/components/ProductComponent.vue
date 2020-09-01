@@ -181,6 +181,7 @@ export default class productComponent extends Vue {
 .product-wrapper {
   height: 100%;
   width: 100%;
+  padding: 10px;
 }
 
 .product-error {

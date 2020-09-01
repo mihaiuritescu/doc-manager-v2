@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex widgets-content">
-
     <grid-layout
       :layout.sync="layout"
       :col-num="12"
@@ -25,21 +24,27 @@
         :key="item.i"
         class="d-flex align-center justify-center widgets-grid-widget"
       >
-        <component v-if="item.comp" :is="item.comp" :key="item.i"></component>
+        <component 
+          v-if="item.comp" 
+          :is="item.comp" 
+          :key="item.i" 
+        ></component>
         <div v-else> {{item.i}} </div>
       </grid-item>
     </grid-layout>
-
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import moment from "moment-business-days";
 import HolidayRequestComponent from "@/components/HolidayRequestComponent.vue";
 import ReportComponent from "@/components/ReportComponent.vue";
 import SupplierComponent from "@/components/SupplierComponent.vue";
 import ProductComponent from "@/components/ProductComponent.vue";
 import OrderComponent from "@/components/OrderComponent.vue";
+import UsersOrdersChartComponent from "@/components/UsersOrdersChartComponent.vue";
+import FormsStatusChartComponent from "@/components/FormsStatusChartComponent.vue";
 import VueGridLayout from "vue-grid-layout";
 
 @Component({
@@ -49,20 +54,38 @@ import VueGridLayout from "vue-grid-layout";
     ReportComponent,
     ProductComponent,
     OrderComponent,
+    FormsStatusChartComponent,
+    UsersOrdersChartComponent,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   }
 })
 export default class WidgetsComponent extends Vue {
-  private layout = [
-    {"x":0,"y":0,"w":2,"h":1,"i":"0", comp: HolidayRequestComponent, resizable: false },
-    {"x":2,"y":0,"w":2,"h":1,"i":"1", comp: ReportComponent, resizable: false },
-    {"x":4,"y":0,"w":2,"h":1,"i":"2", comp: SupplierComponent, resizable: false },
-    {"x":6,"y":0,"w":2,"h":1,"i":"3", comp: ProductComponent, resizable: false },
-    {"x":0,"y":1,"w":2,"h":1,"i":"4", comp: OrderComponent, resizable: false },
-    {"x":2,"y":1,"w":2,"h":2,"i":"5"},
-  ];
+  private moment = moment;
 
+  private barChartConfig = {
+    key: "userName",
+    values: ["totalValue"],
+    axis: {
+      yTicks: 3
+    },
+    color: {
+      default: "#222f3e",
+      current: "#41B882"
+    }
+  }
+
+  private chartType = "";
+
+  private layout = [
+    {"x":0,"y":0,"w":2,"h":1,"i":"0", resizable: false, comp: HolidayRequestComponent, compType: "tile" },
+    {"x":2,"y":0,"w":2,"h":1,"i":"1", resizable: false, comp: ReportComponent, compType: "tile" },
+    {"x":4,"y":0,"w":2,"h":1,"i":"2", resizable: false, comp: SupplierComponent, compType: "tile" },
+    {"x":6,"y":0,"w":2,"h":1,"i":"3", resizable: false, comp: ProductComponent, compType: "tile" },
+    {"x":8,"y":0,"w":2,"h":1,"i":"4", resizable: false, comp: OrderComponent, compType: "tile" },
+    {"x":0,"y":2,"w":5,"h":2,"i":"5", resizable: true, comp: UsersOrdersChartComponent, compType: "chart" },
+    {"x":5,"y":2,"w":7,"h":2,"i":"6", resizable: true, comp: FormsStatusChartComponent, compType: "chart" }
+  ];
 }
 </script>
 
@@ -83,7 +106,7 @@ export default class WidgetsComponent extends Vue {
 }
 
 .widgets-grid-widget {
-  padding: 10px;
+  // padding: 10px;
   background-color: white;
   border: solid 1px lightgrey;
   box-shadow: 

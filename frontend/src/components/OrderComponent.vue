@@ -313,6 +313,7 @@ export default class OrderComponent extends Vue {
 .order-wrapper {
   height: 100%;
   width: 100%;
+  padding: 10px;
 }
 
 .order-dialog-title {
