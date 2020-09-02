@@ -16,6 +16,7 @@ export interface User {
   phone: string;
   occupation: string;
   department: string;
+  admin: boolean;
 }
 
 export interface Notification {
@@ -116,6 +117,7 @@ export interface Employee {
   updatedAt: string;
   edited: boolean;
   deleted: boolean;
+  admin: boolean;
 }
 
 export interface ComplexHolidayRequest {

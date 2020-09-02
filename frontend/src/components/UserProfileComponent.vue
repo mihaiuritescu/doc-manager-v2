@@ -113,7 +113,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { User } from "..//types/appTypes";
+import { User } from "../types/appTypes";
 import { mapState } from "vuex";
 
 @Component({

@@ -1,10 +1,23 @@
 <template>
   <v-card class="chart-wrapper">
-    <v-card-title class="primary white--text">
-      Total orders value by user
+    <v-card-title class="d-flex justify-space-between primary white--text">
+      {{ cardTitle }}
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn            
+            v-bind="attrs"
+            v-on="on" 
+            icon 
+            @click="refershChart"
+          >
+            <v-icon class="white--text">mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+        <span>Refresh data</span>
+      </v-tooltip>
     </v-card-title>
     <div class="d-flex chart-card-content">
-      <div class="chart-left-panel">
+      <div class="chart-left-panel-bars">
         <D3BarChart 
           v-if="usersOrdersData" 
           :config="barChartConfig" 
@@ -12,7 +25,7 @@
           :height="250"
         ></D3BarChart>
       </div>
-      <div class="d-flex flex-column chart-right-panel">
+      <div class="d-flex flex-column chart-right-panel-bars">
         <v-select 
           class="chart-filters-item"
           prepend-icon="mdi-file"
@@ -96,15 +109,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { D3BarChart } from "vue-d3-charts";
 import moment from "moment-business-days";
-import VueLodash from "vue-lodash";
 import _ from "lodash";
-// import random from "lodash/random";
-// import map from "lodash/map";
-import {
-  ComplexOrder,
-  ComplexReport,
-  ComplexHolidayRequest
-} from "..//types/appTypes";
 import FormsService from "../services/FormsService";
 
 @Component({
@@ -115,9 +120,9 @@ import FormsService from "../services/FormsService";
 })
 export default class ChartComponent extends Vue {
   private moment = moment;
-  private orders = [] as ComplexOrder[];
-  private reports = [] as ComplexReport[];
-  private holidayRequests = [] as ComplexHolidayRequest[];
+  private orders = [];
+  private reports = [];
+  private holidayRequests = [];
   private chartData = [];
   private departments = ["All"] as string[];
   private occupations = ["All"] as string[];
@@ -128,16 +133,20 @@ export default class ChartComponent extends Vue {
   private usersOrdersData = [];
   private startDate = "";
   private endDate = "";
-  private yAxisTitle = "Order Value (eur)";
+  private cardTitle = "Total orders value by user";
   private startDateMenu = false;
   private endDateMenu = false;
-  private barChartConfig = {
+
+  private dummyVar = "dummy";
+
+  private barChartConfig = { 
     key: "userName",
     values: ["totalValue"],
     axis: {
-      yTicks: 3,
-      yFormat: ".0f"
+      yTicks: 6,
+      yFormat: ".0f" 
     },
+    labelRotation: 45,
     transition: { ease: "easeBounceOut" },
     color: {
       default: "#1f77b4",
@@ -171,18 +180,18 @@ export default class ChartComponent extends Vue {
     case "Orders":
       this.chartData = [];
       this.chartData = [...this.orders];
-      this.yAxisTitle = "Order Value (eur)";
+      this.cardTitle = "Total orders value by user";
       this.filteredReports(this.chartData);
       break;
     case "Reports":
       this.chartData = [];
-      this.yAxisTitle = "Number of reports";
+      this.cardTitle = "Number of reports per user";
       this.chartData = [...this.reports];
       this.filteredReports(this.chartData);
       break;
     case "Holiday requests":
       this.chartData = [];
-      this.yAxisTitle = "Number of holiday requests";
+      this.cardTitle = "Number of holiday requests per user";
       this.chartData = [...this.holidayRequests];
       this.filteredReports(this.chartData);
       break;
@@ -191,7 +200,7 @@ export default class ChartComponent extends Vue {
     }
   }
 
-  private filteredReports(array) {
+  private filteredReports(array: any) {//eslint-disable-line
     const occupation = this.occupation || "";
     const department = this.department || "";
     const startDate = this.startDate || "";
@@ -200,23 +209,23 @@ export default class ChartComponent extends Vue {
     let result = array;
 
     if (occupation && occupation !== "All") {
-      result = result.filter(item =>  item.userOcc === occupation );
+      result = result.filter((item: any) =>  item.userOcc === occupation );//eslint-disable-line
     }
 
     if (department && department !== "All") {
-      result = result.filter(item => {
+      result = result.filter((item: any) => {//eslint-disable-line 
         return item.userDept === department;
       });
     }
 
     if (status && status !== "All") {
-      result = result.filter(item => {
+      result = result.filter((item: any) => {//eslint-disable-line
         return item.status === status.toLowerCase();
       });
     }
 
     if (startDate && endDate) {
-      result = result.filter(item => {
+      result = result.filter((item: any) => {//eslint-disable-line
         return moment(item.createdAt) >= moment(startDate) && moment(item.createdAt) <= moment(endDate);
       });
     }
@@ -224,54 +233,66 @@ export default class ChartComponent extends Vue {
     if (result && result.length ) this.filteredData(result);
   }
 
-  private filteredData(array) {
+  private filteredData(array: any) {//eslint-disable-line
     switch (this.formType) {
     case "Orders":
+      this.usersOrdersData = [];
       this.usersOrdersData = _(array).groupBy("userName")
-        .map((objs, key) => ({
+        .map((objs: any, key: string) => ({//eslint-disable-line
           "userName": key,
           "totalValue": _.sumBy(objs, "totalValue") 
         }))
         .value();
+      this.usersOrdersData.forEach( (item: any) => {//eslint-disable-line
+        item.userName = item.userName.substr(0, item.userName.indexOf(" "));
+      });
       break;
     case "Reports":
+      this.usersOrdersData = [];
       this.usersOrdersData = _(array)
         .groupBy("userName")
-        .map((objs, key) => ({
+        .map((objs: any, key: string) => ({//eslint-disable-line
           "userName": key,
           "totalValue": (_.countBy(objs, "totalValue"))["undefined"]
         })).value();
+      this.usersOrdersData.forEach( (item: any) => {//eslint-disable-line
+        item.userName = item.userName.substr(0, item.userName.indexOf(" "));
+      });
       break;
     case "Holiday requests":
+      this.usersOrdersData = [];
       this.usersOrdersData = _(array)
         .groupBy("userName")
-        .map((objs, key) => ({
+        .map((objs: any, key: string) => ({//eslint-disable-line
           "userName": key,
           "totalValue": (_.countBy(objs, "totalValue"))["undefined"]
         })).value();
+      this.usersOrdersData.forEach( (item: any) => {//eslint-disable-line
+        item.userName = item.userName.substr(0, item.userName.indexOf(" "));
+      });
       break;
-    default:
+    default: 
       break;
     }
-  }
+  } 
 
   private async fetchOrders() {
-    this.orders = [] as ComplexOrder[];
+    this.orders = [];
     this.orders = (await FormsService.getOrders()).data;
 
     setTimeout(() => {
       this.chartData = [...this.orders];
       this.filteredData(this.chartData);
-    }, 1000);
+    }, 1000); 
   }
 
   private async fetchReports() {
-    this.reports = [] as ComplexReport[];
+    this.reports = [];
     this.reports = (await FormsService.getReports()).data;
   }
 
   private async fetchHolidayRequests() {
-    this.holidayRequests = [] as ComplexHolidayRequest[];
+    this.holidayRequests = []; 
     this.holidayRequests = (await FormsService.getHolidayRequests()).data;
   }
 
@@ -286,6 +307,14 @@ export default class ChartComponent extends Vue {
       this.occupations.push(occupation.name);
     });
   }
+
+  private refershChart(): void {
+    this.fetchOrders();
+    this.fetchReports(); 
+    this.fetchHolidayRequests();
+    // this.formType = "";
+    // this.formType = "Reports";
+  }  
 
   created(): void {
     this.fetchOrders();
@@ -310,9 +339,9 @@ export default class ChartComponent extends Vue {
   max-width: 100%;
 }
 
-// .chart-wrapper .chart__tooltip {
-//   display: none !important;
-// }
+.chart-wrapper .chart__tooltip {
+  display: none !important;
+}
 
 .chart-wrapper .chart__grid {
   margin-left: 5px !important;
@@ -327,19 +356,19 @@ export default class ChartComponent extends Vue {
 // }
 
 .chart-card-content {
-  width: 100%;
+  width: 100%; 
   height: calc(100% - 64px);
 }
 
-.chart-left-panel {
-  min-width: 70%;
-  width: 70%;
+.chart-left-panel-bars {
+  min-width: 75%;
+  width: 75%;
 }
 
-.chart-right-panel {
+.chart-right-panel-bars {
   padding: 10px;
-  min-width: 30%;
-  width: 30%;
+  min-width: 25%;
+  width: 25%;
 }
 
 .chart-filters-item {

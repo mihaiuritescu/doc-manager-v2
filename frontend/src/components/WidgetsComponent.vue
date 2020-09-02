@@ -45,6 +45,9 @@ import ProductComponent from "@/components/ProductComponent.vue";
 import OrderComponent from "@/components/OrderComponent.vue";
 import UsersOrdersChartComponent from "@/components/UsersOrdersChartComponent.vue";
 import FormsStatusChartComponent from "@/components/FormsStatusChartComponent.vue";
+import RequestsChartComponent from "@/components/RequestsChartComponent.vue";
+import OrdersChartComponent from "@/components/OrdersChartComponent.vue";
+import ReportsChartComponent from "@/components/ReportsChartComponent.vue";
 import VueGridLayout from "vue-grid-layout";
 
 @Component({
@@ -56,6 +59,9 @@ import VueGridLayout from "vue-grid-layout";
     OrderComponent,
     FormsStatusChartComponent,
     UsersOrdersChartComponent,
+    RequestsChartComponent,
+    OrdersChartComponent,
+    ReportsChartComponent,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   }
@@ -74,7 +80,7 @@ export default class WidgetsComponent extends Vue {
       current: "#41B882"
     }
   }
-
+ 
   private chartType = "";
 
   private layout = [
@@ -83,8 +89,11 @@ export default class WidgetsComponent extends Vue {
     {"x":4,"y":0,"w":2,"h":1,"i":"2", resizable: false, comp: SupplierComponent, compType: "tile" },
     {"x":6,"y":0,"w":2,"h":1,"i":"3", resizable: false, comp: ProductComponent, compType: "tile" },
     {"x":8,"y":0,"w":2,"h":1,"i":"4", resizable: false, comp: OrderComponent, compType: "tile" },
-    {"x":0,"y":2,"w":5,"h":2,"i":"5", resizable: true, comp: UsersOrdersChartComponent, compType: "chart" },
-    {"x":5,"y":2,"w":7,"h":2,"i":"6", resizable: true, comp: FormsStatusChartComponent, compType: "chart" }
+    {"x":0,"y":2,"w":6,"h":2,"i":"5", resizable: true, comp: UsersOrdersChartComponent, compType: "chart" },
+    {"x":7,"y":4,"w":5,"h":2,"i":"6", resizable: true, comp: RequestsChartComponent, compType: "chart" },
+    {"x":0,"y":4,"w":7,"h":2,"i":"7", resizable: true, comp: FormsStatusChartComponent, compType: "chart" },
+    {"x":6,"y":2,"w":3,"h":2,"i":"8", resizable: true, comp: OrdersChartComponent, compType: "chart" },
+    {"x":9,"y":2,"w":3,"h":2,"i":"9", resizable: true, comp: ReportsChartComponent, compType: "chart" },
   ];
 }
 </script>

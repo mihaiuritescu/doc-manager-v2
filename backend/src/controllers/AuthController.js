@@ -28,6 +28,7 @@ module.exports = {
           phone: req.body.phone,
           occupation: occupation.dataValues.id,
           department: department.dataValues.id,
+          admin: false
         };
         const createdUser = await User.create(newUser);
         const user = req.body;

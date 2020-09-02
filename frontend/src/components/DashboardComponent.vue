@@ -14,6 +14,7 @@
             v-for="item in items"
             :key="item.title"
             :class="item.active ? 'dashboard-drawer-selected-item' : ''"
+            :disabled="item.title !== 'Widgets' && !user.admin"
             link
             @click="switchContent(item.title)"
           >
@@ -51,20 +52,6 @@
       <products-component v-if="products"></products-component>
       <documents-component v-if="documents"></documents-component>
 
-      <!-- Footer -->
-      <!-- <v-footer 
-        padless 
-        color="primary"
-        dark
-        class="dashboard-footer"
-      >
-        <v-col
-          class="text-center"
-          cols="12"
-        >
-          {{ new Date().getFullYear() }} — <strong> DocManager</strong>
-        </v-col>
-      </v-footer> -->
     </div>
 
   </div>
@@ -78,9 +65,12 @@ import WidgetsComponent from "@/components/WidgetsComponent.vue";
 import ProductsComponent from "@/components/ProductsComponent.vue";
 import DocumentsComponent from "@/components/DocumentsComponent.vue";
 import EmployeesComponent from "@/components/EmployeesComponent.vue";
+import { User } from "../types/appTypes";
+import { mapState } from "vuex";
 
 @Component({
   name: "DashboardComponent",
+  computed: mapState(["user"]),
   components: {
     UserProfileComponent,
     NotificationsComponent,
@@ -91,6 +81,7 @@ import EmployeesComponent from "@/components/EmployeesComponent.vue";
   }
 })
 export default class DashboardComponent extends Vue {
+  private user!: User;
   private items = [
     { title: "Widgets", icon: "mdi-view-dashboard", active: true },
     { title: "Employees", icon: "mdi-account", active: false },

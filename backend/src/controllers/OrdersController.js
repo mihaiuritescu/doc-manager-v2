@@ -28,7 +28,6 @@ module.exports = {
         status: req.body.status,
         totalValue: req.body.totalPrice
       }
-      console.log(NewOrder);
       const order = await Order.create(NewOrder);
 
       if(order) {
